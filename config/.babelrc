@@ -1,0 +1,11 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "ignoreBrowserslistConfig": true,
+      "shippedProposals": true,
+      "targets": {
+        "node": "current"
+      }
+    }]
+  ]
+}

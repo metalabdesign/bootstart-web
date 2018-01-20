@@ -1,0 +1,33 @@
+{
+  "ignore": ["./dist/**/*"],
+  "env": {
+    "development": {
+      "plugins": [
+        "react-hot-loader/babel"
+      ]
+    },
+    "test": {
+      "plugins": [
+        "babel-plugin-transform-adana"
+      ]
+    }
+  },
+  "presets": [
+    ["@babel/preset-env", {
+      "shippedProposals": true,
+      "targets": {
+        "node": "current"
+      }
+    }],
+    "@babel/preset-react",
+    "@babel/preset-flow"
+  ],
+  "plugins": [
+    ["babel-plugin-react-rename", {
+      "only": "./src/component/**/*.js",
+      "rename": "./config/babel/getComponentName.babel.js"
+    }],
+    "@babel/plugin-transform-runtime",
+    ["module-resolver", {"alias": {"": "./src"}}]
+  ]
+}
