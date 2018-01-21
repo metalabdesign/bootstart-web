@@ -28,6 +28,13 @@ export type Module = {
   },
 };
 
+export type WebpackStats = {
+  assets: Array<any>,
+  chunks: Array<any>,
+  hash: string,
+  publicPath: string,
+};
+
 export type Asset = {
   url: string,
   name: string,
