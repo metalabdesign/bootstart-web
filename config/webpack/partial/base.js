@@ -80,10 +80,10 @@ const base = ({name, target}) => compose(
     path: path.join(context, 'dist', name),
     ...isProduction && target === 'web' ? {
       filename: '[name].[chunkhash].js',
-      chunkFilename: '[id].[name].[chunkhash].js',
+      chunkFilename: '[name].[chunkhash].js',
     } : {
       filename: '[name].js',
-      chunkFilename: '[id].[name].js',
+      chunkFilename: '[name].js',
     },
   }),
 
