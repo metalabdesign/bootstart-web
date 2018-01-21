@@ -2,7 +2,15 @@
 import type {Reducer} from '/reducer';
 import type {Store as $Store} from 'redux';
 
-export type Action = {};
+import type {
+  LocaleLoadStartedAction,
+  LocaleLoadEndedAction,
+  LocaleLoadFailedAction,
+} from '/action/intl.action';
+
+export type Action = LocaleLoadStartedAction |
+  LocaleLoadEndedAction |
+  LocaleLoadFailedAction;
 
 // =============================================================================
 // Import context.

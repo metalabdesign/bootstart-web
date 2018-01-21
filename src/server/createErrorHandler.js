@@ -2,6 +2,7 @@
 import {error, compose, status, header, send} from 'midori';
 import {readFileSync} from 'fs';
 import {renderError} from '/render';
+import log from '/log';
 
 import type {AppCreator} from 'midori/types';
 
@@ -10,6 +11,7 @@ import type {AppCreator} from 'midori/types';
  * @returns {AppCreator} Midori app.
  */
 const handleAppError = (): AppCreator => error(async (error, req) => {
+  log.error(error);
   const {markup, status} = await renderError({
     stats: req.stats,
     path: req.url,
@@ -30,6 +32,7 @@ const handleAppError = (): AppCreator => error(async (error, req) => {
 const handleEmergencyError = (): AppCreator => {
   const markup = readFileSync('error.html', 'utf8');
   return error(() => {
+    log.error();
     return compose(
       status(500),
       header('Content-Type', 'text/html; charset=utf-8'),
