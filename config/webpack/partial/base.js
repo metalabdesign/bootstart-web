@@ -5,8 +5,8 @@ import webpack from 'webpack';
 
 import {output, plugin} from 'webpack-partial';
 
-// import env from 'webpack-config-env';
-// import css from './css';
+import env from './env';
+import css from './css';
 // import icon from './icon';
 // import image from './image';
 import babel from './babel';
@@ -34,35 +34,12 @@ const base = ({name, target}) => compose(
   plugin(new webpack.HashedModuleIdsPlugin()),
   isDev ? plugin(new CaseSensitivePathsPlugin()) : identity,
 
-  /* env({
-    NODE_ENV: {required: false},
-  }),*/
-
+  env(),
   babel(),
+  css(),
 
   // icon(),
   // image(),
-  /* css({
-    extract: !isDev,
-    localIdentName: '[local]_[hash:base64:8]',
-    getLocalIdent: isDev
-      ? (loaderContext, localIdentName, localName) => {
-        const basename = path.basename(loaderContext.resourcePath)
-          .replace(/\.css(\.js)$/, '');
-
-        let dirname = path.relative(
-          path.join(context, 'src', 'component'),
-          path.dirname(loaderContext.resourcePath),
-        );
-
-        if (!dirname.endsWith(`${path.sep}${basename}`)) {
-          dirname = path.join(dirname, basename);
-        }
-
-        return `${dirname.replace(/\.|\//g, '-')}_${localName}`;
-      }
-      : undefined,
-  }),*/
 
   // ========================================================================
   // Optimization
