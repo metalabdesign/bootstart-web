@@ -1,55 +1,43 @@
 import {join} from 'path';
 import {compose} from 'ramda';
 import {loader, plugin} from 'webpack-partial';
-// import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import ExtractTextPlugin from 'extract-css-chunks-webpack-plugin';
 
 const PRODUCTION = process.env.NODE_ENV === 'production';
+const IS_STYLE = /\.(css(\.js)?)$/;
 
-/**
- * CSS Webpack loader partial.
- *
- * @param {Boolean|Object} options.extract Enable/disable Extract Text Plugin.
- * An object value is used as options for the Extract Text Plugin constructor.
- * @param {Boolean} options.minimize Enable/disable cssnano minification.
- * @param {Boolean} options.jsStyles Enable/disable `css-js-loader`.
- * @param {Boolean|Object} options.postcss Enable/disable `postcss-loader`.
- * An object value is used as options for `postcss-loader`.
- * @param {Boolean} options.modules Enable/disable CSS Modules.
- * @param {String} options.localIdentName CSS Modules local identifier template.
- * @returns {Function} Webpack config partial.
- */
-export default ({
-  // extract = PRODUCTION,
-  minimize = PRODUCTION,
-  postcss = true,
-  modules = true,
-  localIdentName = PRODUCTION
-    ? '[hash:base64]'
-    : '[name]--[local]--[hash:base64:5]',
-  ...options
-} = {}) => {
-  const IS_STYLE = /\.(css(\.js)?)$/;
-  const IS_JS_STYLE = /\.css\.js$/;
+// TODO: `extract-css-chunks-webpack-plugin` isn't perfect either. There is a
+// hardcoded reference to `process.env.NODE_ENV === 'development'` in the code
+// instead of a config option. Escape hatch here for now.
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'development';
+}
 
-  const extractor = null; /* new ExtractTextPlugin({
-    disable: !extract,
-    filename: '[name].[hash].css',
-    ...extract,
-  });*/
+export default () => {
+  // TODO: `extract-css-chunks-webpack-plugin` isn't perfect either. There
+  // are some notable things: the HMR they use is based entirely on the CSS
+  // filename being the same in development mode. So this has to match.
+  const extractor = new ExtractTextPlugin({
+    filename: PRODUCTION ? '[name].[hash].css' : '[name].css',
+  });
 
-  const importLoaders = postcss ? 1 : 0;
-
-  const query = {modules, localIdentName, minimize, importLoaders, ...options};
+  const options = {
+    modules: true,
+    localIdentName: PRODUCTION
+      ? '[hash:base64]'
+      : '[name]--[local]--[hash:base64:5]',
+    minimize: PRODUCTION,
+    importLoaders: 1,
+  };
 
   return (config) => compose(
     plugin(extractor),
     loader({
-      test: IS_JS_STYLE,
-      loader: require.resolve('value-loader'),
-    }),
-    loader({
-      test: IS_JS_STYLE,
-      loader: require.resolve('css-js-loader'),
+      test: /\.css\.js$/,
+      loader: [
+        require.resolve('css-js-loader'),
+        require.resolve('value-loader'),
+      ],
     }),
     loader({
       test: IS_STYLE,
@@ -66,15 +54,14 @@ export default ({
         loader: extractor.extract({
           use: {
             loader: require.resolve('css-loader'),
-            query,
+            options,
           },
-          fallback: require.resolve('style-loader'),
         }),
       })
       : loader({
         test: IS_STYLE,
         loader: require.resolve('css-loader/locals'),
-        query,
+        options,
       }),
   )(config);
 };
