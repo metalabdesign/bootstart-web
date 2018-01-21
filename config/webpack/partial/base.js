@@ -5,7 +5,7 @@ import webpack from 'webpack';
 
 import {output, plugin} from 'webpack-partial';
 
-// import env from 'webpack-config-env';
+import env from './env';
 import css from './css';
 // import icon from './icon';
 // import image from './image';
@@ -34,10 +34,7 @@ const base = ({name, target}) => compose(
   plugin(new webpack.HashedModuleIdsPlugin()),
   isDev ? plugin(new CaseSensitivePathsPlugin()) : identity,
 
-  /* env({
-    NODE_ENV: {required: false},
-  }),*/
-
+  env(),
   babel(),
   css(),
 
