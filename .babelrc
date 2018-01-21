@@ -23,6 +23,7 @@
     "@babel/preset-flow"
   ],
   "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
     ["babel-plugin-react-rename", {
       "only": "./src/component/**/*.js",
       "rename": "./config/babel/getComponentName.babel.js"

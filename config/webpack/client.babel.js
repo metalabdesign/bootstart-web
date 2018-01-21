@@ -6,7 +6,7 @@ import base from './partial/base';
 
 const getRender = () => {
   try {
-    return require('../../dist/render').default;
+    return require('../../dist/render');
   } catch (err) {
     console.log('Unable to load static page renderer.');
     console.log('Make sure you built the renderer first.');
@@ -23,13 +23,21 @@ const createConfig = compose(
       name: 'html/[path][name].[ext]',
       paths: [
         '/',
-        '/error/404',
         '/error/500',
       ],
       mapStatsToProps: (stats) => {
         return {stats};
       },
-      render: getRender(),
+      render: (props) => {
+        const render = getRender();
+        if (props.path === '/error/500') {
+          return render.renderError({
+            ...props,
+            error: new Error(),
+          });
+        }
+        return render.renderApp(props);
+      },
     }), config);
   },
   output({
