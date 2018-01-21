@@ -1,8 +1,8 @@
 /* @flow */
 import {prop, groupBy, chain, map, pipe, reject} from 'ramda';
-import type {AssetMap} from '/types';
+import type {AssetMap, WebpackStats} from '/types';
 
-const extractAssets = (stats: Object): AssetMap => {
+const extractAssets = (stats: WebpackStats): AssetMap => {
   if (!stats) {
     return {};
   }

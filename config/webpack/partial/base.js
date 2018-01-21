@@ -1,35 +1,24 @@
-import {compose, assoc, identity, map} from 'ramda';
+import {compose, assoc, identity} from 'ramda';
 import nearest from 'find-nearest-file';
 import path from 'path';
 import webpack from 'webpack';
-import fs from 'fs';
 
-import {output, loader, plugin} from 'webpack-partial';
+import {output, plugin} from 'webpack-partial';
 
 // import env from 'webpack-config-env';
 // import css from './css';
 // import icon from './icon';
 // import image from './image';
+import babel from './babel';
 
 import CleanPlugin from 'clean-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import StatsPlugin from 'stats-webpack-plugin';
 
 const context = path.dirname(nearest('package.json'));
-const babelConfig = JSON.parse(fs.readFileSync(path.join(context, '.babelrc')));
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-
-const getTargets = (target) => {
-  switch (target) {
-  case 'node':
-    return {node: 'current'};
-  case 'web':
-  default:
-    return undefined;
-  }
-};
 
 const base = ({name, target}) => compose(
   (config) => plugin(new CleanPlugin([config.output.path], {
@@ -49,38 +38,7 @@ const base = ({name, target}) => compose(
     NODE_ENV: {required: false},
   }),*/
 
-  (config) => loader({
-    loader: 'babel-loader',
-    include: [
-      path.join(config.context, 'src'),
-      path.join(config.context, 'lib'),
-    ],
-    test: /\.js$/,
-    options: {
-      ...babelConfig,
-      presets: map((entry) => {
-        const [name, config] = Array.isArray(entry) ?
-          entry : [entry, {}];
-        if (name === '@babel/preset-env') {
-          return [name, {
-            ...config,
-            modules: false,
-            useBuiltIns: 'usage',
-            ignoreBrowserslistConfig: target === 'node',
-            targets: getTargets(target),
-            include: [
-              ...(config.include || []),
-              // While newer versions of node support this, `webpack` does
-              // not because it uses `acorn`. So adjust accordingly.s
-              'proposal-object-rest-spread',
-            ],
-          }];
-        }
-        return entry;
-      }, babelConfig.presets),
-      cacheDirectory: false,
-    },
-  }, config),
+  babel(),
 
   // icon(),
   // image(),
@@ -122,10 +80,10 @@ const base = ({name, target}) => compose(
     path: path.join(context, 'dist', name),
     ...isProduction && target === 'web' ? {
       filename: '[name].[chunkhash].js',
-      chunkFilename: '[id].[name].[chunkhash].js',
+      chunkFilename: '[name].[chunkhash].js',
     } : {
       filename: '[name].js',
-      chunkFilename: '[id].[name].js',
+      chunkFilename: '[name].js',
     },
   }),
 
