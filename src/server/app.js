@@ -17,6 +17,7 @@ export default compose(
     const {markup, redirect} = await renderApp({
       stats: req.stats,
       path: req.url,
+      preload: req.preload,
     });
     return compose(
       status(redirect ? 302 : 200),

@@ -13,6 +13,7 @@ import extractAssets from './extractAssets';
 export default async ({
   path,
   stats,
+  preload,
 }) => {
   const store = createStore();
   store.dispatch(navigate(path));
@@ -28,6 +29,7 @@ export default async ({
       assets={extractAssets(stats)}
       redirect={redirect}
       state={state}
+      preload={preload}
     />
   ));
   return Promise.resolve({

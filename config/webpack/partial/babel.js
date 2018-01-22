@@ -35,7 +35,7 @@ export default () => (config) => {
           return [name, {
             ...config,
             modules: false,
-            useBuiltIns: 'usage',
+            useBuiltIns: false,
             ignoreBrowserslistConfig: target === 'node',
             targets: getTargets(target),
             include: [
