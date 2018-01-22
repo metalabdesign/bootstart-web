@@ -4,6 +4,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "analyze": "SKIP_STATIC=true NODE_ENV=production npm run build:client && ./node_modules/.bin/webpack-bundle-analyzer dist/client/stats.json",
     "build:client": "./node_modules/.bin/webpack --config ./config/webpack/client.babel.js",
     "build:render": "./node_modules/.bin/webpack --config ./config/webpack/render.babel.js",
     "build:server": "./node_modules/.bin/webpack --config ./config/webpack/server.babel.js",
@@ -68,6 +69,7 @@
     "react-test-renderer": "^16.2.0",
     "unexpected": "^10.36.3",
     "unexpected-react": "^5.0.1",
+    "webpack-bundle-analyzer": "^2.9.2",
     "webpack-udev-server": "^0.8.0"
   },
   "browserslist": [
