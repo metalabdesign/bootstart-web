@@ -14,10 +14,12 @@ import {path} from 'midori/match';
 
 // import common from '/server/common';
 import app from './app';
+import polyfill from './polyfill';
 
 const createApp = compose(
   // common,
   match(path('/favicon.ico'), compose(status(404), send(''))),
+  polyfill,
   app,
 );
 

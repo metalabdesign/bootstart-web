@@ -5,6 +5,8 @@ import {Switch, Match} from 'waygate';
 import {compose} from 'ramda';
 import {hot} from 'react-hot-loader';
 
+import Button from '/component/base/Button';
+
 const App = ({store}) => (
   <Provider store={store}>
     <Switch>
@@ -13,6 +15,7 @@ const App = ({store}) => (
       </Match>
       <Match path='/'>
         Not found Y.
+        <Button>Click</Button>
       </Match>
     </Switch>
   </Provider>

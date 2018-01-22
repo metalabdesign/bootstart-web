@@ -9,6 +9,7 @@ import extractAssets from './extractAssets';
 export default async ({
   error,
   stats,
+  preload,
 }) => {
   const markup = ReactDOMServer.renderToString((
     <Error error={error}/>
@@ -17,6 +18,7 @@ export default async ({
     <Page
       markup={markup}
       assets={extractAssets(stats)}
+      preload={preload}
     />
   ));
   return Promise.resolve({

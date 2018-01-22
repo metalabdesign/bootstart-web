@@ -30,9 +30,19 @@ const extract = pipe(
 const env = (env = {}) => console.log(chalk.bold('📦  Enironment')) ||
   plugin(new DefinePlugin(extract(env)));
 
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+
 export default () => env({
   NODE_ENV: {
     value: 'development',
     required: true,
+  },
+  FORCE_PROMISE_POLYFILL: {
+    value: isDev ? 'true' : '',
+    required: false,
+  },
+  FORCE_FETCH_POLYFILL: {
+    value: isDev ? 'true' : '',
+    required: false,
   },
 });

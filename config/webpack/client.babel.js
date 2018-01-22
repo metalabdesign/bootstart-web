@@ -3,6 +3,7 @@ import {output, plugin} from 'webpack-partial';
 import PagesPlugin from 'pages-webpack-plugin';
 
 import base from './partial/base';
+import modernizr from './partial/modernizr';
 
 const getRender = () => {
   try {
@@ -32,6 +33,7 @@ const createConfig = compose(
       render: getRender(),
     }), config);
   },
+  modernizr(),
   output({
     publicPath: '/asset',
   }),

@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import {filter, map, pipe, defaultTo} from 'ramda';
+import {filter, map, pipe, defaultTo, uniqBy, chain, prop} from 'ramda';
 import serialize from 'htmlescape';
 
 import type {State, AssetMap, Asset} from '/types';
@@ -38,6 +38,15 @@ type Props = {
   markup: string,
   state: State,
   assets: AssetMap,
+  preload?: Array<string>,
+};
+
+const embedAssets = (assets, entries, fn) => {
+  return pipe(
+    chain((name) => assets[name] || []),
+    uniqBy(prop('name')),
+    fn,
+  )(entries);
 };
 
 const Page = ({
@@ -45,6 +54,7 @@ const Page = ({
   markup,
   redirect,
   state,
+  preload = [],
 }: Props) => {
   return (
     <html lang='en'>
@@ -54,7 +64,7 @@ const Page = ({
           <meta httpEquiv='refresh' content={`0;URL='${redirect}'`}/>
         )}
         <title>...</title>
-        {styles(assets.index)}
+        {embedAssets(assets, [...preload, 'index'], styles)}
       </head>
       <body>
         <div id='app' dangerouslySetInnerHTML={{__html: markup}}/>
@@ -63,7 +73,7 @@ const Page = ({
           id='state'
           dangerouslySetInnerHTML={{__html: serialize(state)}}
         />
-        {scripts(assets.index)}
+        {embedAssets(assets, [...preload, 'index'], scripts)}
       </body>
     </html>
   );
