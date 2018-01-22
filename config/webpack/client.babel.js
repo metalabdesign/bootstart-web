@@ -16,7 +16,10 @@ const getRender = () => {
 
 const createConfig = compose(
   (config) => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (
+      process.env.NODE_ENV !== 'production' ||
+      process.env.SKIP_STATIC === 'true'
+    ) {
       return config;
     }
     return plugin(new PagesPlugin({
