@@ -1,18 +1,25 @@
 // @flow
 
-export type Asset = {
-  url: string,
-  name: string,
-  chunkName: string,
-};
+// Import modules ==============================================================
+import type {RouterHistory} from 'react-router-dom';
+import typeof Reducer from '/reducer';
 
-export type WebpackStats = {
-  assets: Array<Asset>,
-  chunks: Array<mixed>,
-  hash: string,
-  publicPath: string,
-};
+import type {
+  ThunkAction as _ThunkAction,
+  Store as _Store,
+  Dispatch as _Dispatch,
+} from '/store';
 
-export type AssetMap = {
-  [string]: Array<Asset>,
-};
+import type {Action} from '/action';
+
+// Export allowed actions for use in reducers.
+export type {Action};
+
+// Export state shape for use in selectors.
+export type State = $Call<Reducer, *, *>;
+
+// Export store signature expected by connected components and thunk actions.
+export type Context = {history: RouterHistory};
+export type ThunkAction<T> = _ThunkAction<State, Action, Context, T>;
+export type Dispatch = _Dispatch<State, Action, Context>;
+export type Store = _Store<State, Action, Context>;

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 import ErrorRoot from '/component/root/ErrorRoot';
-import Page from '/component/static/Page';
+import Page from '/render/component/Page';
 
 import extractAssets from './extractAssets';
 
@@ -22,6 +22,6 @@ export default async ({
   ));
   return Promise.resolve({
     markup: `<!DOCTYPE html>${page}`,
-    status: error.status || error.statusCode || 500,
+    statusCode: error.status || error.statusCode || 500,
   });
 };

@@ -1,5 +1,5 @@
 [ignore]
-.*/node_modules/webpack-udev-server/.*\.js(\.flow)?$
+.*/node_modules/webpack-udev-server/.*
 
 [include]
 

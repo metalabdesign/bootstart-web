@@ -1,8 +1,10 @@
-/* @flow */
+// @flow
 
-import type {State} from '/reducer';
+import typeof Reducer from '/reducer';
 
-export default (context: *) => {
+type State = $Call<Reducer, *, *>;
+
+const parseInitialState = (): State => {
   const stateContainer = document.getElementById('state');
 
   if (!stateContainer) {
@@ -12,7 +14,7 @@ export default (context: *) => {
   // JSON.parse returns `any`, which is normally a dangerous type in flow that
   // should be further refined. However, we can trust that the parsed result
   // here is a serialized state object matching the `State` type.
-  const initialState: State = JSON.parse(stateContainer.textContent);
-
-  return Object.freeze({...context, initialState});
+  return (JSON.parse(stateContainer.textContent): State);
 };
+
+export default parseInitialState;

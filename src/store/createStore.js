@@ -1,46 +1,56 @@
 // @flow
 
 // Import modules ==============================================================
-import {createStore, applyMiddleware} from 'redux';
+import {createStore as create, applyMiddleware} from 'redux';
+// import type {Reducer} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {compose, identity} from 'ramda';
+import {routerMiddleware} from 'react-router-redux';
+import type {RouterHistory} from 'react-router-dom';
 
-// Import actions ==============================================================
-import type {Action} from '/action';
+export type ThunkAction<S, A, C, T> = (Dispatch<S, A, C>, () => S, C) => T;
 
-// Import reducers =============================================================
-import reducer from '/reducer';
-import type {State} from '/reducer';
-
-export type Dispatch<A, G, C> = {
+export type Dispatch<S, A, C> = {
   (A): A,
-  <T>((Dispatch<A, G, C>, G, C) => T): T;
+  <T>(ThunkAction<S, A, C, T>): T,
 };
 
 export type Store<S, A, C> = {
-  dispatch: Dispatch<A, () => S, C>,
+  dispatch: Dispatch<S, A, C>,
   getState(): S,
   subscribe(() => void): () => void,
   replaceReducer((S, A) => S): void,
 };
 
-export default <C: {initialState?: State}>(context: C) => {
+function createStore<
+  C,
+  S,
+  A: {type: string},
+  R:(state: S, action: A) => S
+>({
+  context,
+  history,
+  reducer,
+  state,
+}: {
+  history: RouterHistory,
+  context: C,
+  reducer: R,
+  state?: S,
+}): Store<S, A, C> {
   const enhancer = compose(
-    applyMiddleware(thunkMiddleware.withExtraArgument(context)),
+    applyMiddleware(
+      thunkMiddleware.withExtraArgument(context),
+      routerMiddleware(history),
+    ),
     identity,
   );
 
-  const store: Store<State, Action, C> = context.initialState
-    ? createStore(reducer, context.initialState, enhancer)
-    : createStore(reducer, enhancer);
+  const store = state !== undefined
+    ? create(reducer, state, enhancer)
+    : create(reducer, enhancer);
 
-  if (module.hot) {
-    module.hot.accept('../reducer', () => {
-      // eslint-disable-next-line no-console
-      console.log('🚒  Hot reload reducers');
-      store.replaceReducer(require('../reducer').default);
-    });
-  }
+  return store;
+}
 
-  return Object.freeze({...context, store});
-};
+export default createStore;
