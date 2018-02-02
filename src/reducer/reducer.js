@@ -9,12 +9,16 @@ import {routerReducer as router} from 'react-router-redux';
 // Import actions ==============================================================
 import type {Action} from '/action';
 
+// Import reducers =============================================================
+import auth from '/reducer/auth.reducer';
+
 // Imported reducer functions that are missing types will default to unsafe any
 // in our state. Use this type to cast the return type to mixed which will warn
 // us about potential access, i.e. make the reducer properly opaque.
 type UnsafeReducer = (*, *) => mixed;
 
 const reducers = {
+  auth,
   form: (form: UnsafeReducer),
   router,
 };
