@@ -10,6 +10,13 @@ declare module 'react-dom' {
   ): React$ElementRef<ElementType>;
 }
 
+declare module 'flow-runtime' {
+  declare type Type<T> = {
+    assert: (input: any) => T,
+  };
+  declare var reify: any;
+}
+
 /*
 note: this also needs to be added for ramda:
 declare function chain<U, T> (
