@@ -30,6 +30,8 @@ const base = ({name, target}) => compose(
     process.env.NODE_ENV === 'production' ? 'production' : 'development'
   ),
 
+  assoc('devtool', isProduction ? false : 'source-map'),
+
   plugin(new StatsPlugin('stats.json')),
   plugin(new webpack.HashedModuleIdsPlugin()),
   isDev ? plugin(new CaseSensitivePathsPlugin()) : identity,
@@ -68,12 +70,15 @@ const base = ({name, target}) => compose(
   // `package.json` file. This is be the absolute path to the project root.
   assoc('context', context),
   assoc('target', target),
+
   // Define an entry chunk. A `name` property must be defined on the initial
   // config object.
   assoc('entry', {
-    index: path.join(context, 'src', `${name}`),
+    index: [
+      ...!isProduction ? [require.resolve('source-map-support/register')] : [],
+      path.join(context, 'src', `${name}`),
+    ],
   }),
-
 );
 
 export default base;

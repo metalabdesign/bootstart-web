@@ -5,7 +5,7 @@
  */
 
 // Import modules ==============================================================
-import {compose, request, send, header, status, next} from 'midori';
+import {compose, request, error, send, header, status, next} from 'midori';
 // import {withStats} from 'midori-webpack';
 
 import {renderApp} from '/render';
@@ -28,5 +28,13 @@ export default compose(
       result.redirect ? header('Location', result.redirect) : next,
       send(result.markup),
     );
+  }),
+  error(async (error) => {
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+
+    throw error;
   }),
 );
