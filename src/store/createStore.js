@@ -1,34 +1,46 @@
-/* @flow */
-import {createStore as reduxCreateStore, applyMiddleware} from 'redux';
+// @flow
+
+// Import modules ==============================================================
+import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {compose, identity} from 'ramda';
 
-// =============================================================================
-// Import reducers.
-// =============================================================================
+// Import actions ==============================================================
+import type {Action} from '/action';
+
+// Import reducers =============================================================
 import reducer from '/reducer';
+import type {State} from '/reducer';
 
-import type {Store, State, Context} from '/types';
+export type Dispatch<A, G, C> = {
+  (A): A,
+  <T>((Dispatch<A, G, C>, G, C) => T): T;
+};
 
-const createEnhancer = (context: Context) => compose(
-  applyMiddleware(
-    thunkMiddleware.withExtraArgument(context),
-  ),
-  identity,
-);
+export type Store<S, A, C> = {
+  dispatch: Dispatch<A, () => S, C>,
+  getState(): S,
+  subscribe(() => void): () => void,
+  replaceReducer((S, A) => S): void,
+};
 
-const createStore = (initialState: State): Store => {
-  const store = reduxCreateStore(reducer, initialState, createEnhancer());
+export default <C: {initialState?: State}>(context: C) => {
+  const enhancer = compose(
+    applyMiddleware(thunkMiddleware.withExtraArgument(context)),
+    identity,
+  );
 
-  if (process.env.NODE_ENV !== 'production' && module.hot) {
-    // Enable Webpack hot module replacement for reducers.
+  const store: Store<State, Action, C> = context.initialState
+    ? createStore(reducer, context.initialState, enhancer)
+    : createStore(reducer, enhancer);
+
+  if (module.hot) {
     module.hot.accept('../reducer', () => {
-      console.log('🚒  Hot reloading reducers.'); // eslint-disable-line
+      // eslint-disable-next-line no-console
+      console.log('🚒  Hot reload reducers');
       store.replaceReducer(require('../reducer').default);
     });
   }
 
-  return store;
+  return Object.freeze({...context, store});
 };
-
-export default createStore;

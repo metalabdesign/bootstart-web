@@ -1,10 +1,16 @@
 [ignore]
+.*/node_modules/webpack-udev-server/.*\.js(\.flow)?$
 
 [include]
 
 [libs]
 
+[lints]
+all=warn
+
 [options]
 emoji=true
+include_warnings=true
 module.name_mapper='^/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 module.name_mapper.extension='css' -> '<PROJECT_ROOT>/flow-stub/CSSModule.js'
+suppress_comment=\\(.\\|\n\\)*\\$ExpectError

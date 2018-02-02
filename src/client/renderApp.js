@@ -1,26 +1,20 @@
-/* @flow */
-import type {Store} from '/types';
-import App from '/component/root/App';
+// @flow
+
+// Import modules ==============================================================
 import ReactDOM from 'react-dom';
 import React from 'react';
 
-const getAppRootNode = (): Element => {
-  const element = document.getElementById('app');
-  if (!element) {
-    throw new Error();
+// Import components ===========================================================
+import AppRoot from '/component/root/AppRoot';
+
+export default (context: *) => {
+  const root = document.getElementById(AppRoot.rootNodeId);
+
+  if (!root) {
+    throw new Error('AppRoot root node missing');
   }
-  return element;
-};
 
-/**
- * Render the `<App>` component into the DOM.
- *
- * @param {Store} store A Redux store object.
- * @returns {void}
- */
-const renderApp = (store: Store): void => {
-  const element = getAppRootNode();
-  ReactDOM.hydrate(<App store={store}/>, element);
-};
+  ReactDOM.hydrate(<AppRoot store={context.store}/>, root);
 
-export default renderApp;
+  return context;
+};

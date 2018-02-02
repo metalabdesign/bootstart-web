@@ -1,20 +1,18 @@
 /* @flow */
-import type {State} from '/types';
 
-/**
- * Parse the serialized Redux store state provided by the server.
- *
- * @returns {?State} The redux store state.
- */
-const parseInitialState = (): ?State => {
-  try {
-    const stateContainer = document.getElementById('state');
-    const initialState = stateContainer ?
-      JSON.parse(stateContainer.textContent) : undefined;
-    return initialState;
-  } catch (err) {
-    return undefined;
+import type {State} from '/reducer';
+
+export default (context: *) => {
+  const stateContainer = document.getElementById('state');
+
+  if (!stateContainer) {
+    throw new Error('Could not extract initial state.');
   }
-};
 
-export default parseInitialState;
+  // JSON.parse returns `any`, which is normally a dangerous type in flow that
+  // should be further refined. However, we can trust that the parsed result
+  // here is a serialized state object matching the `State` type.
+  const initialState: State = JSON.parse(stateContainer.textContent);
+
+  return Object.freeze({...context, initialState});
+};

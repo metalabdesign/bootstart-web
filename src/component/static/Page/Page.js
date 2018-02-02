@@ -1,9 +1,12 @@
-/* @flow */
+// @flow
+
+// Import modules ==============================================================
 import React from 'react';
 import {filter, map, pipe, defaultTo} from 'ramda';
 import serialize from 'htmlescape';
 
-import type {State, AssetMap, Asset} from '/types';
+// Import types ================================================================
+import type {AssetMap, Asset} from '/types';
 
 const scripts = pipe(
   defaultTo([]),
@@ -33,31 +36,33 @@ const styles = pipe(
   )),
 );
 
-type Props = {
-  redirect?: string,
+type Props<T> = {
+  rootId: string,
+  redirect?: string | null,
   markup: string,
-  state: State,
+  state: T,
   assets: AssetMap,
 };
 
-const Page = ({
+const Page = <T>({
+  rootId,
   assets,
   markup,
   redirect,
   state,
-}: Props) => {
+}: Props<T>) => {
   return (
     <html lang='en'>
       <head>
         <meta charSet='utf-8'/>
-        {redirect && (
+        {typeof redirect === 'string' && (
           <meta httpEquiv='refresh' content={`0;URL='${redirect}'`}/>
         )}
         <title>...</title>
         {styles(assets.index)}
       </head>
       <body>
-        <div id='app' dangerouslySetInnerHTML={{__html: markup}}/>
+        <div id={rootId} dangerouslySetInnerHTML={{__html: markup}}/>
         <script
           type='text/json'
           id='state'

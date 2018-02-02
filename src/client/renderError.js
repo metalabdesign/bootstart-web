@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ErrorRoot from '/component/root/Error';
+import ErrorRoot from '/component/root/ErrorRoot';
 
 let appFailed = false;
 

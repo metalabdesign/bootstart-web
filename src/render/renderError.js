@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import Error from '/component/root/Error';
+import ErrorRoot from '/component/root/ErrorRoot';
 import Page from '/component/static/Page';
 
 import extractAssets from './extractAssets';
@@ -11,7 +11,7 @@ export default async ({
   stats,
 }) => {
   const markup = ReactDOMServer.renderToString((
-    <Error error={error}/>
+    <ErrorRoot error={error}/>
   ));
   const page = ReactDOMServer.renderToStaticMarkup((
     <Page
