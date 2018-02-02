@@ -29,6 +29,7 @@
       "rename": "./config/babel/getComponentName.babel.js"
     }],
     "@babel/plugin-transform-runtime",
+    "babel-plugin-flow-runtime",
     ["module-resolver", {"alias": {"": "./src"}}]
   ]
 }
