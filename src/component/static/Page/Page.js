@@ -36,8 +36,8 @@ const styles = pipe(
   )),
 );
 
-type Props<T> = {
-  rootId: string,
+type Props<T = void> = {
+  rootElementId: string,
   redirect?: string | null,
   markup: string,
   state: T,
@@ -45,7 +45,7 @@ type Props<T> = {
 };
 
 const Page = <T>({
-  rootId,
+  rootElementId,
   assets,
   markup,
   redirect,
@@ -62,12 +62,14 @@ const Page = <T>({
         {styles(assets.index)}
       </head>
       <body>
-        <div id={rootId} dangerouslySetInnerHTML={{__html: markup}}/>
-        <script
-          type='text/json'
-          id='state'
-          dangerouslySetInnerHTML={{__html: serialize(state)}}
-        />
+        <div id={rootElementId} dangerouslySetInnerHTML={{__html: markup}}/>
+        {typeof state !== 'undefined' &&
+          <script
+            type='text/json'
+            id='state'
+            dangerouslySetInnerHTML={{__html: serialize(state)}}
+          />
+        }
         {scripts(assets.index)}
       </body>
     </html>

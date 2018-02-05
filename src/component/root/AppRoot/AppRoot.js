@@ -14,7 +14,7 @@ const AppRoot = ({store}) => {
   );
 };
 
-AppRoot.rootNodeId = 'app';
+AppRoot.rootElementId = 'app';
 
 export default compose(
   hot(module),

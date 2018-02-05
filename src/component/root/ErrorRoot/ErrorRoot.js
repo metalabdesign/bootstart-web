@@ -2,6 +2,6 @@
 
 const ErrorRoot = () => null;
 
-ErrorRoot.rootNodeId = 'error';
+ErrorRoot.rootElementId = 'error';
 
 export default ErrorRoot;

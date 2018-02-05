@@ -38,7 +38,7 @@ const renderApp = async ({path, stats}: RenderOptions) => {
   const redirect = newPath !== path ? newPath : null;
   const page = ReactDOMServer.renderToStaticMarkup((
     <Page
-      rootId={AppRoot.rootNodeId}
+      rootElementId={AppRoot.rootElementId}
       markup={markup}
       assets={extractAssets(stats)}
       redirect={redirect}

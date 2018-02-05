@@ -15,6 +15,7 @@ export default async ({
   ));
   const page = ReactDOMServer.renderToStaticMarkup((
     <Page
+      rootElementId={ErrorRoot.rootElementId}
       markup={markup}
       assets={extractAssets(stats)}
     />

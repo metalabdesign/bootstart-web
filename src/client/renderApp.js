@@ -8,7 +8,7 @@ import React from 'react';
 import AppRoot from '/component/root/AppRoot';
 
 export default (context: *) => {
-  const root = document.getElementById(AppRoot.rootNodeId);
+  const root = document.getElementById(AppRoot.rootElementId);
 
   if (!root) {
     throw new Error('AppRoot root node missing');
