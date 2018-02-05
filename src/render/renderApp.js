@@ -1,29 +1,44 @@
+// @flow
+
+// Import modules ==============================================================
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-
-import App from '/component/root/App';
-import Page from '/component/static/Page';
-
 import {navigate, getPath} from 'waygate';
+import {pipe} from 'ramda';
+
+// Import types ================================================================
+import type {WebpackStats} from '/types';
+
+// Import components ===========================================================
+import AppRoot from '/component/root/AppRoot';
+import Page from '/component/static/Page';
 
 import createStore from '/store';
 
 import extractAssets from './extractAssets';
 
-export default async ({
-  path,
-  stats,
-}) => {
-  const store = createStore();
+type RenderOptions = {
+  path: string,
+  stats: WebpackStats,
+};
+
+const renderApp = async ({path, stats}: RenderOptions) => {
+  const context = pipe(
+    createStore,
+  )(Object.freeze({}));
+
+  const {store} = context;
+
   store.dispatch(navigate(path));
   const markup = ReactDOMServer.renderToString((
-    <App store={store}/>
+    <AppRoot store={store}/>
   ));
   const state = store.getState();
   const newPath = getPath(state);
   const redirect = newPath !== path ? newPath : null;
   const page = ReactDOMServer.renderToStaticMarkup((
     <Page
+      rootElementId={AppRoot.rootElementId}
       markup={markup}
       assets={extractAssets(stats)}
       redirect={redirect}
@@ -35,3 +50,5 @@ export default async ({
     redirect,
   });
 };
+
+export default renderApp;

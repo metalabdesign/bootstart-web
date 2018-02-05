@@ -1,4 +1,9 @@
-/* @flow */
+// @flow
+
+/* flowlint
+ *   untyped-import:off
+ */
+
 import {error, compose, status, header, send} from 'midori';
 import {readFileSync} from 'fs';
 import {renderError} from '/render';

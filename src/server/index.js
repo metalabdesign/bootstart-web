@@ -1,14 +1,11 @@
-/* @flow */
-// =============================================================================
-// Import modules.
-// =============================================================================
-import {
-  compose,
-  match,
-  send,
-  status,
-  connect,
-} from 'midori';
+// @flow
+
+/* flowlint
+ *   untyped-import:off
+ */
+
+// Import modules ==============================================================
+import {compose, match, send, status, connect} from 'midori';
 import http from 'http';
 import {path} from 'midori/match';
 

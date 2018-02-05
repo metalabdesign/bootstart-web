@@ -1,16 +1,15 @@
-import renderApp from './renderApp';
-import parseInitialState from './parseInitialState';
-import createStore from '/store';
+// @flow
 
 // TODO: This doesn't get included in the bundle for some reason so we have
 // to shove it here.
 import 'extract-css-chunks-webpack-plugin/hotModuleReplacement';
 import './global.css';
 
-const state = parseInitialState();
+import createStore from '/store';
+import parseInitialState from './parseInitialState';
+import renderApp from './renderApp';
 
-const store = createStore(state);
-
-// setExceptionHandler(renderError)
-// setExceptionHandler(renderApp)
-renderApp(store);
+Promise.resolve(Object.freeze({}))
+  .then(parseInitialState)
+  .then(createStore)
+  .then(renderApp);

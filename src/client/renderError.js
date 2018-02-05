@@ -1,12 +1,12 @@
 /* @flow */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ErrorRoot from '/component/root/Error';
+import ErrorRoot from '/component/root/ErrorRoot';
 
 let appFailed = false;
 
 const getErrorRootNode = () => {
-  let root = document.getElementById(ErrorRoot.rootNodeId);
+  let root = document.getElementById(ErrorRoot.rootElementId);
 
   if (root) {
     return root;

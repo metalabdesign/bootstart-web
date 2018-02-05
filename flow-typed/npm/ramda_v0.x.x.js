@@ -1,3 +1,6 @@
+// flow-typed signature: bd8e51b6c0c8ba360e9621e1661849f0
+// flow-typed version: dd2e8d3c25/ramda_v0.x.x/flow_>=v0.49.x
+
 /* eslint-disable no-unused-vars, no-redeclare */
 
 type Transformer<A, B> = {

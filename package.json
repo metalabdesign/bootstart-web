@@ -8,7 +8,7 @@
     "build:render": "./node_modules/.bin/webpack --config ./config/webpack/render.babel.js",
     "build:server": "./node_modules/.bin/webpack --config ./config/webpack/server.babel.js",
     "build": "npm run build:render && npm run build:client && npm run build server",
-    "dev": "./node_modules/.bin/webpack-udev-server --config ./config/webpack/client.webpack.config.babel.js --config ./config/webpack/server.webpack.config.babel.js",
+    "dev": "./node_modules/.bin/webpack-udev-server --config ./config/webpack/client.babel.js --config ./config/webpack/server.babel.js",
     "test:lint": "./node_modules/.bin/eslint .",
     "test:flow": "./node_modules/.bin/flow check",
     "test:spec": "NODE_ENV=test ./node_modules/.bin/_mocha -r adana-dump -r @babel/register -R spec --recursive test/spec",

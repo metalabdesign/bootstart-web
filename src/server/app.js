@@ -1,3 +1,10 @@
+// @flow
+
+/* flowlint
+ *   untyped-import: off
+ */
+
+// Import modules ==============================================================
 import {compose, request, send, header, status, next} from 'midori';
 // import {withStats} from 'midori-webpack';
 
