@@ -21,10 +21,8 @@ export default compose(
 )(AppRoot);
 
 if (module.hot) {
-  module.hot.addStatusHandler((status) => {
-    if (status === 'apply') {
-      // eslint-disable-next-line no-console
-      console.log('🚒  Hot reload AppRoot');
-    }
-  });
+  if (module.hot.status() === 'apply') {
+    // eslint-disable-next-line no-console
+    console.log('🚒  Hot reload AppRoot');
+  }
 }
