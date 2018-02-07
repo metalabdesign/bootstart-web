@@ -3,52 +3,87 @@
 // Import modules ==============================================================
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import {navigate, getPath} from 'waygate';
-import {pipe} from 'ramda';
+import createHistory from 'history/createMemoryHistory';
+import {StaticRouter} from 'react-router-dom';
 
 // Import types ================================================================
-import type {WebpackStats} from '/types';
+import type {WebpackStats} from '/render/types';
+
+// Import reducer ==============================================================
+import reducer from '/reducer';
+
+// Import store ================================================================
+import createStore from '/store';
 
 // Import components ===========================================================
 import AppRoot from '/component/root/AppRoot';
-import Page from '/component/static/Page';
+import Page from '/render/component/Page';
 
-import createStore from '/store';
-
+// Import local utils ==========================================================
 import extractAssets from './extractAssets';
 
-type RenderOptions = {
-  path: string,
-  stats: WebpackStats,
+const renderPath = (path, store) => {
+  const routerContext = {};
+
+  const markup = ReactDOMServer.renderToString(
+    <StaticRouter location={path} context={routerContext}>
+      <AppRoot store={store}/>
+    </StaticRouter>
+  );
+
+  if (routerContext.url) {
+    const status = routerContext.action === 'REPLACE' ? 301 : 302;
+    return {
+      status,
+      redirect: routerContext.url,
+      markup: null,
+    };
+  }
+
+  return {
+    status: routerContext.status || 200,
+    markup,
+    redirect: null,
+  };
 };
 
-const renderApp = async ({path, stats}: RenderOptions) => {
-  const context = pipe(
-    createStore,
-  )(Object.freeze({}));
-
-  const {store} = context;
-
-  store.dispatch(navigate(path));
-  const markup = ReactDOMServer.renderToString((
-    <AppRoot store={store}/>
-  ));
-  const state = store.getState();
-  const newPath = getPath(state);
-  const redirect = newPath !== path ? newPath : null;
-  const page = ReactDOMServer.renderToStaticMarkup((
+const renderPage = (markup, stats, state) =>
+  ReactDOMServer.renderToStaticMarkup((
     <Page
       rootElementId={AppRoot.rootElementId}
       markup={markup}
       assets={extractAssets(stats)}
-      redirect={redirect}
       state={state}
     />
   ));
-  return Promise.resolve({
-    markup: `<!DOCTYPE html>${page}`,
-    redirect,
+
+type Options = {
+  path: string,
+  stats: WebpackStats,
+};
+
+const renderApp = async ({path, stats}: Options) => {
+  const history = createHistory();
+
+  const context = {
+    history,
+  };
+
+  const store = createStore({
+    history,
+    context,
+    reducer,
   });
+
+  const result = renderPath(path, store);
+
+  if (result.markup !== null) {
+    const page = renderPage(result.markup, stats, store.getState());
+    const markup = `<!DOCTYPE html>${page}`;
+    return {...result, markup};
+  }
+
+  return result;
 };
 
 export default renderApp;

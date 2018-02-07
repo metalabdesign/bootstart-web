@@ -6,7 +6,7 @@ import {filter, map, pipe, defaultTo} from 'ramda';
 import serialize from 'htmlescape';
 
 // Import types ================================================================
-import type {AssetMap, Asset} from '/types';
+import type {AssetMap, Asset} from '/render/types';
 
 const scripts = pipe(
   defaultTo([]),
@@ -38,7 +38,6 @@ const styles = pipe(
 
 type Props<T = void> = {
   rootElementId: string,
-  redirect?: string | null,
   markup: string,
   state: T,
   assets: AssetMap,
@@ -48,16 +47,12 @@ const Page = <T>({
   rootElementId,
   assets,
   markup,
-  redirect,
   state,
 }: Props<T>) => {
   return (
     <html lang='en'>
       <head>
         <meta charSet='utf-8'/>
-        {typeof redirect === 'string' && (
-          <meta httpEquiv='refresh' content={`0;URL='${redirect}'`}/>
-        )}
         <title>...</title>
         {styles(assets.index)}
       </head>

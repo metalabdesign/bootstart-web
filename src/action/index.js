@@ -1,9 +1,9 @@
 // @flow
 
 // Import modules ==============================================================
-import type {Action as WaygateAction} from 'waygate/types';
+import type {Action as RouterAction} from 'react-router-redux';
 
 export type Action =
-  // npm/waygate
-  | WaygateAction
+  // npm/react-router-redux
+  | RouterAction
 ;

@@ -4,7 +4,7 @@
 import {prop, groupBy, chain, map, pipe, reject} from 'ramda';
 
 // Import types ================================================================
-import type {AssetMap, WebpackStats} from '/types';
+import type {AssetMap, WebpackStats} from '/render/types';
 
 const extractAssets = (stats: WebpackStats): AssetMap => {
   if (!stats) {

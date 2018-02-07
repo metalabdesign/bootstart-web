@@ -5,11 +5,35 @@
 import 'extract-css-chunks-webpack-plugin/hotModuleReplacement';
 import './global.css';
 
+import createHistory from 'history/createBrowserHistory';
+
 import createStore from '/store';
+import reducer from '/reducer';
+
 import parseInitialState from './parseInitialState';
 import renderApp from './renderApp';
 
-Promise.resolve(Object.freeze({}))
-  .then(parseInitialState)
-  .then(createStore)
-  .then(renderApp);
+const state = parseInitialState();
+const history = createHistory();
+
+const context = {
+  history,
+};
+
+const store = createStore({
+  history,
+  context,
+  reducer,
+  state,
+});
+
+if (module.hot) {
+  module.hot.accept('../reducer', () => {
+    // eslint-disable-next-line no-console
+    console.log('🚒  Hot reload reducers');
+    const nextReducer = require('../reducer').default;
+    store.replaceReducer(nextReducer);
+  });
+}
+
+renderApp({store, history});

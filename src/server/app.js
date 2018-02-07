@@ -21,15 +21,12 @@ export default compose(
   //   });
   // }),
   request(async (req) => {
-    const {markup, redirect} = await renderApp({
-      stats: req.stats,
-      path: req.url,
-    });
+    const result = await renderApp({path: req.url, stats: req.stats});
     return compose(
-      status(redirect ? 302 : 200),
+      status(result.status),
       header('Content-Type', 'text/html; charset=utf-8'),
-      redirect ? header('Location', redirect) : next,
-      send(markup),
+      result.redirect ? header('Location', result.redirect) : next,
+      send(result.markup),
     );
   }),
 );

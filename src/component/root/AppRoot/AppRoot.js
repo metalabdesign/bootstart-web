@@ -3,13 +3,27 @@
 // Import modules ==============================================================
 import React from 'react';
 import {Provider} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
 import {compose} from 'ramda';
 import {hot} from 'react-hot-loader';
+
+// Import components ===========================================================
+import Status from '/component/util/Status';
 
 const AppRoot = ({store}) => {
   return (
     <Provider store={store}>
-      <div>app root</div>
+      <Switch>
+        <Route path='/foo' component={() => <div>foo</div>}/>
+        <Route
+          component={() => (
+            <div>
+              <Status code={404}/>
+              not found
+            </div>
+          )}
+        />
+      </Switch>
     </Provider>
   );
 };

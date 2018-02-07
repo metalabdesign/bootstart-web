@@ -1,8 +1,10 @@
 // @flow
 
-import type {State} from '../reducer';
+import type {Location} from 'react-router-dom';
 
-declare var state: State;
+import typeof Reducer from '../reducer';
+
+declare var state: $Call<Reducer, *, *>;
 
 // The shape of the state should be correctly inferred from the combined
 // reducers.
@@ -10,10 +12,10 @@ declare var state: State;
 // $ExpectError
 (state: null);
 
-(state.waygate.path: string);
+(state.router.location: null | Location);
 
 // $ExpectError
-(state.waygate.path: null);
+(state.router.location: string);
 
 // Access to opaque unsafe reducers should be an error.
 // $ExpectError
