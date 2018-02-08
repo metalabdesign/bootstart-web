@@ -1,6 +1,7 @@
 import {compose} from 'ramda';
 import {output, plugin} from 'webpack-partial';
 import PagesPlugin from 'pages-webpack-plugin';
+import {DefinePlugin} from 'webpack';
 
 import base from './partial/base';
 
@@ -32,6 +33,9 @@ const createConfig = compose(
       render: getRender(),
     }), config);
   },
+
+  plugin(new DefinePlugin({NODE_ENV: JSON.stringify(process.env.NODE_ENV)})),
+
   output({
     publicPath: '/asset',
   }),

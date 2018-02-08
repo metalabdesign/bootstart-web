@@ -11,7 +11,8 @@ rules:
   metalab/react/prefer-stateless-function: 0
   metalab/jsx-a11y/no-onchange: 0
 globals:
-  module: true
-  require: true
-  process: true
-  global: true
+  module: false
+  require: false
+  process: false
+  global: false
+  __DEV__: false

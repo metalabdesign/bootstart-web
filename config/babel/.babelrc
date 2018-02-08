@@ -7,8 +7,5 @@
         "node": "current"
       }
     }]
-  ],
-  "plugins": [
-    "./babel/devExpressionPlugin"
   ]
 }
