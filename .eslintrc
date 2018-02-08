@@ -16,3 +16,8 @@ globals:
   process: false
   global: false
   __DEV__: false
+overrides:
+  -
+    files: "*.test.js"
+    env:
+      jest: true
