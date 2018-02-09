@@ -1,0 +1,14 @@
+{
+  "testMatch": [
+    "**/__test__/**/*.test.js"
+  ],
+  "coveragePathIgnorePatterns": [
+    "__test__/"
+  ],
+  "transform": {
+    "^.+\\.js?$": "babel-7-jest"
+  },
+  "globals": {
+    "__DEV__": false
+  }
+}

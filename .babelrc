@@ -8,7 +8,7 @@
     },
     "test": {
       "plugins": [
-        "babel-plugin-transform-adana"
+        "./config/babel/istanbulHackPlugin"
       ]
     }
   },
