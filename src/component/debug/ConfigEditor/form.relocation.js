@@ -1,16 +1,16 @@
-import compose from "lodash/fp/compose";
-import React from "react";
+import compose from 'lodash/fp/compose';
+import React from 'react';
 
 import createRelocationComponent, {
   MODAL_ROOT,
-} from "/component/relocation";
-import Modal from "/component/base/modal";
-import PaddedContent from "/component/base/padded-content";
-import {register} from "/component";
+} from '/component/relocation';
+import Modal from '/component/base/modal';
+import PaddedContent from '/component/base/padded-content';
+import {register} from '/component';
 
-import Form from "./form";
+import Form from './form';
 
-export const COMPONENT_ID = "@@debug/FEATURE_MODAL";
+export const COMPONENT_ID = '@@debug/FEATURE_MODAL';
 
 export default compose(
   register(COMPONENT_ID),
@@ -20,8 +20,8 @@ export default compose(
     return (
       <Modal
         {...modalProps}
-        title="Features"
-        size="large"
+        title='Features'
+        size='large'
         onClickClose={remove}
         onClickOutside={remove}
       >
