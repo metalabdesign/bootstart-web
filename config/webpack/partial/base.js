@@ -5,7 +5,6 @@ import webpack from 'webpack';
 
 import {output, plugin} from 'webpack-partial';
 
-import env from './env';
 import css from './css';
 // import icon from './icon';
 // import image from './image';
@@ -17,26 +16,19 @@ import StatsPlugin from 'stats-webpack-plugin';
 
 const context = path.dirname(nearest('package.json'));
 
-const isProduction = process.env.NODE_ENV === 'production';
-const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-
 const base = ({name, target}) => compose(
   (config) => plugin(new CleanPlugin([config.output.path], {
     root: config.context,
   }), config),
 
-  assoc(
-    'mode',
-    process.env.NODE_ENV === 'production' ? 'production' : 'development'
-  ),
+  assoc('mode', __DEV__ ? 'development' : 'production'),
 
-  assoc('devtool', isProduction ? false : 'source-map'),
+  assoc('devtool', __DEV__ ? 'source-map' : 'false'),
 
   plugin(new StatsPlugin('stats.json')),
   plugin(new webpack.HashedModuleIdsPlugin()),
-  isDev ? plugin(new CaseSensitivePathsPlugin()) : identity,
+  __DEV__ ? plugin(new CaseSensitivePathsPlugin()) : identity,
 
-  env(),
   babel(),
   css(),
 
@@ -46,7 +38,7 @@ const base = ({name, target}) => compose(
   // ========================================================================
   // Optimization
   // ========================================================================
-  !isProduction ? identity : compose(
+  __DEV__ ? identity : compose(
     plugin(new webpack.optimize.ModuleConcatenationPlugin()),
   ),
 
@@ -57,7 +49,7 @@ const base = ({name, target}) => compose(
   // production web targeted builds to prevent browser caching between releases.
   output({
     path: path.join(context, 'dist', name),
-    ...isProduction && target === 'web' ? {
+    ...!__DEV__ && target === 'web' ? {
       filename: '[name].[chunkhash].js',
       chunkFilename: '[name].[chunkhash].js',
     } : {
@@ -75,10 +67,9 @@ const base = ({name, target}) => compose(
   // config object.
   assoc('entry', {
     index: [
-      ...!isProduction ? [require.resolve('source-map-support/register')] : [],
+      ...__DEV__ ? [require.resolve('source-map-support/register')] : [],
       path.join(context, 'src', `${name}`),
     ],
   }),
 );
-
 export default base;
