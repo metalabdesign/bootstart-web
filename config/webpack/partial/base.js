@@ -21,6 +21,10 @@ const base = ({name, target}) => compose(
     root: config.context,
   }), config),
 
+  plugin(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  })),
+
   assoc('mode', __DEV__ ? 'development' : 'production'),
 
   assoc('devtool', __DEV__ ? 'source-map' : 'false'),
@@ -50,8 +54,8 @@ const base = ({name, target}) => compose(
   output({
     path: path.join(context, 'dist', name),
     ...!__DEV__ && target === 'web' ? {
-      filename: '[name].[chunkhash].js',
-      chunkFilename: '[name].[chunkhash].js',
+      filename: '[name].[hash].js',
+      chunkFilename: '[name].[hash].js',
     } : {
       filename: '[name].js',
       chunkFilename: '[name].js',
