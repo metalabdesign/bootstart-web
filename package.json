@@ -29,6 +29,7 @@
     "babel-loader": "^8.0.0-beta.0",
     "babel-plugin-module-resolver": "^3.0.0",
     "babel-plugin-react-rename": "^0.1.0",
+    "bluebird": "^3.5.1",
     "bugnet": "^0.1.1",
     "clean-webpack-plugin": "^0.1.17",
     "cross-loader": "^0.1.0",
