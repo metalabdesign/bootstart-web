@@ -25,6 +25,7 @@
   "plugins": [
     "./config/babel/devExpressionPlugin",
     "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties",
     ["babel-plugin-react-rename", {
       "only": "./src/component/**/*.js",
       "rename": "./config/babel/getComponentName.babel.js"

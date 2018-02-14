@@ -14,7 +14,14 @@ const AppRoot = ({store}) => {
   return (
     <Provider store={store}>
       <Switch>
-        <Route path='/foo' component={() => <div>foo</div>}/>
+        <Route
+          path='/foo'
+          component={() => (
+            <button onClick={() => {throw new Error('Sample Error');}}>
+              Throw sample error
+            </button>
+          )}
+        />
         <Route
           component={() => (
             <div>

@@ -1,4 +1,5 @@
-/* @flow */
+// @flow
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ErrorRoot from '/component/root/ErrorRoot';
@@ -28,7 +29,7 @@ const getErrorRootNode = () => {
 // TODO: Unmount the main app when this is called.
 export const renderError = (error: Error) => {
   if (!appFailed) {
-    ReactDOM.hydrate(<ErrorRoot error={error}/>, getErrorRootNode());
+    ReactDOM.render(<ErrorRoot error={error}/>, getErrorRootNode());
     appFailed = true;
   }
 };

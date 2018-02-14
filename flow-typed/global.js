@@ -1,6 +1,7 @@
 // @flow
 
 declare var __DEV__: boolean;
+declare var __webpack_public_path__: string;
 
 type Status =
   | 'idle'
