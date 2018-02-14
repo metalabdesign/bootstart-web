@@ -1,7 +1,7 @@
 // @flow
 
 // Import modules ==============================================================
-import ReactDOM from 'react-dom';
+import _ReactDOM from 'react-dom';
 import React from 'react';
 import {ConnectedRouter} from 'react-router-redux';
 import type {RouterHistory} from 'react-router-dom';
@@ -10,6 +10,16 @@ import type {Store} from '/store';
 
 // Import components ===========================================================
 import AppRoot from '/component/root/AppRoot';
+
+const ReactDOM: {
+  ...typeof _ReactDOM,
+  hydrate<ElementType: React$ElementType>(
+    element: React$Element<ElementType>,
+    container: Element,
+    callback?: () => void,
+  ): React$ElementRef<ElementType>,
+  // $ExpectError
+} = (_ReactDOM: any);
 
 type Params<S, A, C> = {
   history: RouterHistory,

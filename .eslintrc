@@ -16,6 +16,7 @@ globals:
   process: false
   global: false
   __DEV__: false
+  __webpack_public_path__: false
 overrides:
   -
     files: "*.test.js"
