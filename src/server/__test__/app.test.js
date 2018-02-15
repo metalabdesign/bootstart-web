@@ -1,4 +1,8 @@
+// @flow
+
+// flowlint untyped-import: off
 import {fetch} from 'midori/test';
+// flowlint untyped-import: error
 import app from '/server/app';
 
 describe('/server/app', () => {
