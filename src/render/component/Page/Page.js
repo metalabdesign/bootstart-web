@@ -24,7 +24,7 @@ const scripts = pipe(
 const styles = pipe(
   defaultTo([]),
   filter((asset: Asset) => (
-    /\.css/.test(asset.name)
+    /\.css$/.test(asset.name)
   )),
   map((asset: Asset) => (
     <link
