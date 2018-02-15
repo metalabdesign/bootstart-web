@@ -39,7 +39,7 @@ const styles = pipe(
 type Props<T = void> = {
   rootElementId: string,
   markup: string,
-  state: T,
+  state?: T,
   assets: AssetMap,
 };
 

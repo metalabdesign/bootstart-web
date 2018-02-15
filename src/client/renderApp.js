@@ -18,8 +18,9 @@ const ReactDOM: {
     container: Element,
     callback?: () => void,
   ): React$ElementRef<ElementType>,
-  // $ExpectError
+// flowlint unclear-type: off
 } = (_ReactDOM: any);
+// flowlint unclear-type: error
 
 type Params<S, A, C> = {
   history: RouterHistory,
