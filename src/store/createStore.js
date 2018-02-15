@@ -42,7 +42,7 @@ function createStore<
     applyMiddleware(
       thunkMiddleware.withExtraArgument(context),
       routerMiddleware(history),
-      ...__DEV__ ? [require('redux-freeze').default] : [],
+      ...__DEV__ ? [require('redux-freeze')] : [],
     ),
     identity,
   );

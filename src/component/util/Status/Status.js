@@ -1,9 +1,5 @@
 // @flow
 
-/* flowlint
- *   unclear-type: off
- */
-
 // Import modules ==============================================================
 import React from 'react';
 import {Route} from 'react-router-dom';
@@ -17,7 +13,9 @@ export const Status = ({code}: Props) => {
     <Route
       render={(context) => {
         if (context.staticContext) {
+          // flowlint unclear-type: off
           (context.staticContext: any).status = code;
+          // flowlint unclear-type: error
         }
         return null;
       }}

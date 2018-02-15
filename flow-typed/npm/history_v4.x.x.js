@@ -1,13 +1,13 @@
 // flow-typed signature: e96cae6441ff5c327a29ba0503fcf051
 // flow-typed version: <<STUB>>/history_v4/flow_v0.63.1
 
-type _GetUserConfirmation =
+declare type $npm$history$GetUserConfirmation =
   (message: string, callback: (boolean) => void) => mixed;
 
 declare module 'history/createBrowserHistory' {
   import type {RouterHistory} from 'react-router-dom';
 
-  declare export type GetUserConfirmation = _GetUserConfirmation;
+  declare export type GetUserConfirmation = $npm$history$GetUserConfirmation;
 
   declare export default (props?: {
     getUserConfirmation?: GetUserConfirmation,
@@ -22,7 +22,7 @@ declare module 'history/createHashHistory' {
   import type {RouterHistory} from 'react-router-dom';
 
   declare export type HashType = 'hashbang' | 'noslash' | 'slash';
-  declare export type GetUserConfirmation = _GetUserConfirmation;
+  declare export type GetUserConfirmation = $npm$history$GetUserConfirmation;
 
   declare export default (props?: {
     getUserConfirmation?: GetUserConfirmation,
@@ -34,7 +34,7 @@ declare module 'history/createHashHistory' {
 declare module 'history/createMemoryHistory' {
   import type {RouterHistory} from 'react-router-dom';
 
-  declare export type GetUserConfirmation = _GetUserConfirmation;
+  declare export type GetUserConfirmation = $npm$history$GetUserConfirmation;
 
   declare export type MemoryHistory = RouterHistory & {
     index: number,
@@ -75,7 +75,7 @@ declare module 'history/PathUtils' {
 }
 
 declare module 'history' {
-  declare export type GetUserConfirmation = _GetUserConfirmation;
+  declare export type GetUserConfirmation = $npm$history$GetUserConfirmation;
 
   declare export {
     default as createBrowserHistory,

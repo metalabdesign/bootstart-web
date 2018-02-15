@@ -24,7 +24,7 @@ const scripts = pipe(
 const styles = pipe(
   defaultTo([]),
   filter((asset: Asset) => (
-    /\.css/.test(asset.name)
+    /\.css$/.test(asset.name)
   )),
   map((asset: Asset) => (
     <link
@@ -39,7 +39,7 @@ const styles = pipe(
 type Props<T = void> = {
   rootElementId: string,
   markup: string,
-  state: T,
+  state?: T,
   assets: AssetMap,
 };
 

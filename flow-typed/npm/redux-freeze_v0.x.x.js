@@ -4,7 +4,7 @@
 declare module 'redux-freeze' {
   import type {MiddlewareAPI} from 'redux';
 
-  declare export default {
+  declare module.exports: {
     <S, A, D>(api: MiddlewareAPI<S, A, D>): (next: D) => D;
   };
 }

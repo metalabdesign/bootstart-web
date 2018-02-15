@@ -1,36 +1,29 @@
 // @flow
 
-/* flowlint
- *   untyped-import: off
- */
-
 // Import modules ==============================================================
+// flowlint untyped-import: off
 import {compose, request, error, send, header, status, next} from 'midori';
-// import {withStats} from 'midori-webpack';
+// flowlint untyped-import: error
+import type {Hub} from 'webpack-udev-server';
 
 import {renderApp} from '/render';
+import assets from './assets';
 
-// import createFileWatcher from 'webpack-udev-server/createFileWatcher';
-// const watcher = createFileWatcher('./dist/client/stats.json');
-
-export default compose(
-  // request((req) => {
-  //   return watcher.poll().then((data) => {
-  //     req.stats = JSON.parse(data.toString('utf8'));
-  //     return next;
-  //   });
-  // }),
-  request(async (req) => {
-    const result = await renderApp({path: req.url, stats: req.stats});
-    return compose(
-      status(result.status),
-      header('Content-Type', 'text/html; charset=utf-8'),
-      result.redirect ? header('Location', result.redirect) : next,
-      send(result.markup),
-    );
-  }),
-  error(async (error) => {
-    console.error(error);
-    throw error;
-  }),
-);
+export default (hub?: Hub) => {
+  return compose(
+    assets(hub),
+    request(async (req) => {
+      const result = await renderApp({path: req.url, stats: req.stats});
+      return compose(
+        status(result.status),
+        header('Content-Type', 'text/html; charset=utf-8'),
+        result.redirect ? header('Location', result.redirect) : next,
+        send(result.markup),
+      );
+    }),
+    error(async (error) => {
+      console.error(error);
+      throw error;
+    }),
+  );
+};

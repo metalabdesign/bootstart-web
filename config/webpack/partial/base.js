@@ -27,7 +27,7 @@ const base = ({name, target}) => compose(
 
   assoc('mode', __DEV__ ? 'development' : 'production'),
 
-  assoc('devtool', __DEV__ ? 'source-map' : 'false'),
+  assoc('devtool', __DEV__ || target === 'node' ? 'source-map' : 'false'),
 
   plugin(new StatsPlugin('stats.json')),
   plugin(new webpack.HashedModuleIdsPlugin()),
@@ -71,7 +71,9 @@ const base = ({name, target}) => compose(
   // config object.
   assoc('entry', {
     index: [
-      ...__DEV__ ? [require.resolve('source-map-support/register')] : [],
+      ...__DEV__ || target === 'node'
+        ? [require.resolve('source-map-support/register')]
+        : [],
       path.join(context, 'src', `${name}`),
     ],
   }),

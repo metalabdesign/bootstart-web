@@ -12,7 +12,8 @@
     "test:lint": "./node_modules/.bin/eslint .",
     "test:flow": "./node_modules/.bin/flow check",
     "test:spec": "./node_modules/.bin/jest --runInBand=${JEST_SERIAL:-$CI} --coverage=${JEST_COVERAGE:-$CI}",
-    "test": "npm run test:lint && npm run test:spec && npm run test:flow"
+    "test": "npm run test:lint && npm run test:spec && npm run test:flow",
+    "start": "PORT=${PORT:-8080} node ./dist/server"
   },
   "dependencies": {
     "@babel/core": "^7.0.0-beta.40",

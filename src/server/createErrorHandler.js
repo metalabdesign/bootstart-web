@@ -1,10 +1,8 @@
 // @flow
 
-/* flowlint
- *   untyped-import:off
- */
-
+/* flowlint untyped-import: off */
 import {error, compose, status, header, send} from 'midori';
+/* flowlint untyped-import: error */
 import {readFileSync} from 'fs';
 import {renderError} from '/render';
 
@@ -15,13 +13,13 @@ import type {AppCreator} from 'midori/types';
  * @returns {AppCreator} Midori app.
  */
 const handleAppError = (): AppCreator => error(async (error, req) => {
-  const {markup, status} = await renderError({
+  const {markup, status: statusCode} = await renderError({
     stats: req.stats,
     path: req.url,
     error,
   });
   return compose(
-    status(status),
+    status(statusCode),
     header('Content-Type', 'text/html; charset=utf-8'),
     send(markup),
   );
