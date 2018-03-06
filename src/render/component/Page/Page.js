@@ -6,14 +6,14 @@ import {filter, map, pipe, defaultTo} from 'ramda';
 import serialize from 'htmlescape';
 
 // Import types ================================================================
-import type {AssetMap, Asset} from '/render/types';
+import type {AssetMap, AssetWithUrl} from '/render/types';
 
 const scripts = pipe(
   defaultTo([]),
-  filter((asset: Asset) => (
+  filter((asset: AssetWithUrl) => (
     /\.js$/.test(asset.name)
   )),
-  map((asset: Asset) => (
+  map((asset: AssetWithUrl) => (
     <script
       src={asset.url}
       key={asset.name}
@@ -23,10 +23,10 @@ const scripts = pipe(
 
 const styles = pipe(
   defaultTo([]),
-  filter((asset: Asset) => (
+  filter((asset: AssetWithUrl) => (
     /\.css$/.test(asset.name)
   )),
-  map((asset: Asset) => (
+  map((asset: AssetWithUrl) => (
     <link
       rel='stylesheet'
       type='text/css'
@@ -41,6 +41,7 @@ type Props<T = void> = {
   markup: string,
   state?: T,
   assets: AssetMap,
+  head: React$Node,
 };
 
 const Page = <T>({
@@ -48,6 +49,7 @@ const Page = <T>({
   assets,
   markup,
   state,
+  head,
 }: Props<T>) => {
   return (
     <html lang='en'>
@@ -55,9 +57,14 @@ const Page = <T>({
         <meta charSet='utf-8'/>
         <title>...</title>
         {styles(assets.index)}
+        {head}
       </head>
       <body>
-        <div id={rootElementId} dangerouslySetInnerHTML={{__html: markup}}/>
+        <div
+          id={rootElementId}
+          className='root'
+          dangerouslySetInnerHTML={{__html: markup}}
+        />
         {typeof state !== 'undefined' &&
           <script
             type='text/json'

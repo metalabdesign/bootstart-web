@@ -6,8 +6,6 @@ import 'extract-css-chunks-webpack-plugin/hotModuleReplacement';
 
 import './exceptionHandler';
 
-import './global.css';
-
 import createHistory from 'history/createBrowserHistory';
 
 import createStore from '/store';

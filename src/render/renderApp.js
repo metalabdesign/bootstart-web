@@ -5,6 +5,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import createHistory from 'history/createMemoryHistory';
 import {StaticRouter} from 'react-router-dom';
+import {ServerStyleSheet, StyleSheetManager} from 'styled-components';
 
 // Import types ================================================================
 import type {WebpackStats} from '/render/types';
@@ -22,40 +23,12 @@ import Page from '/render/component/Page';
 // Import local utils ==========================================================
 import extractAssets from './extractAssets';
 
-const renderPath = (path, store) => {
-  const routerContext = {};
-
-  const markup = ReactDOMServer.renderToString(
-    <StaticRouter location={path} context={routerContext}>
-      <AppRoot store={store}/>
-    </StaticRouter>
-  );
-
-  if (routerContext.url) {
-    const status = routerContext.action === 'REPLACE' ? 301 : 302;
-    return {
-      status,
-      redirect: routerContext.url,
-      markup: null,
-    };
-  }
-
-  return {
-    status: routerContext.status || 200,
-    markup,
-    redirect: null,
-  };
-};
-
-const renderPage = (markup, stats, state) =>
-  ReactDOMServer.renderToStaticMarkup((
-    <Page
-      rootElementId={AppRoot.rootElementId}
-      markup={markup}
-      assets={extractAssets(stats)}
-      state={state}
-    />
-  ));
+const renderPage = (props) => ReactDOMServer.renderToStaticMarkup((
+  <Page
+    rootElementId={AppRoot.rootElementId}
+    {...props}
+  />
+));
 
 type Options = {
   path: string,
@@ -75,15 +48,36 @@ const renderApp = async ({path, stats}: Options) => {
     reducer,
   });
 
-  const result = renderPath(path, store);
+  const routerContext = {};
+  const sheet = new ServerStyleSheet();
 
-  if (result.markup !== null) {
-    const page = renderPage(result.markup, stats, store.getState());
-    const markup = `<!DOCTYPE html>${page}`;
-    return {...result, markup};
+  const markup = ReactDOMServer.renderToString(
+    <StaticRouter location={path} context={routerContext}>
+      <StyleSheetManager sheet={sheet.instance}>
+        <AppRoot store={store}/>
+      </StyleSheetManager>
+    </StaticRouter>
+  );
+
+  if (routerContext.url) {
+    const status = routerContext.action === 'REPLACE' ? 301 : 302;
+    return {
+      status,
+      redirect: routerContext.url,
+      markup: '',
+    };
   }
 
-  return result;
+  const page = renderPage({
+    assets: extractAssets(stats),
+    head: sheet.getStyleElement(),
+    state: store.getState(),
+    markup,
+  });
+  return {
+    status: routerContext.status || 200,
+    markup: `<!DOCTYPE html>${page}`,
+  };
 };
 
 export default renderApp;

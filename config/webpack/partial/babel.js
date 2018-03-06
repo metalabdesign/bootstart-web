@@ -24,6 +24,7 @@ export default () => (config) => {
     include: [
       path.join(config.context, 'src'),
       path.join(config.context, 'lib'),
+      path.join(config.context, 'config'),
     ],
     test: /\.js$/,
     options: {

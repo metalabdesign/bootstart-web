@@ -8,28 +8,17 @@ import {compose} from 'ramda';
 import {hot} from 'react-hot-loader';
 
 // Import components ===========================================================
-import Status from '/component/util/Status';
+import LandingView from '/component/view/LandingView';
+import NotFoundView from '/component/view/NotFoundView';
+
+import '/client/globalStyles';
 
 const AppRoot = ({store}) => {
   return (
     <Provider store={store}>
       <Switch>
-        <Route
-          path='/foo'
-          component={() => (
-            <button onClick={() => {throw new Error('Sample Error');}}>
-              Throw sample error
-            </button>
-          )}
-        />
-        <Route
-          component={() => (
-            <div>
-              <Status code={404}/>
-              not found
-            </div>
-          )}
-        />
+        <Route path='/' component={LandingView}/>
+        <Route component={NotFoundView}/>
       </Switch>
     </Provider>
   );

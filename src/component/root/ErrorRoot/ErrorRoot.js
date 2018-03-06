@@ -3,6 +3,8 @@
 // Import modules ==============================================================
 import React from 'react';
 
+import '/client/globalStyles';
+
 const style = {
   top: 0,
   right: 0,

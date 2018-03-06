@@ -1,18 +1,14 @@
 // @flow
-
-/* flowlint untyped-import: off */
-import {error, compose, status, header, send} from 'midori';
-/* flowlint untyped-import: error */
+import {error, compose, status, header, send, App} from 'midori';
 import {readFileSync} from 'fs';
+import path from 'path';
 import {renderError} from '/render';
-
-import type {AppCreator} from 'midori/types';
 
 /**
  * Try to handle errors using the app's error root.
- * @returns {AppCreator} Midori app.
+ * @returns {App} Midori app.
  */
-const handleAppError = (): AppCreator => error(async (error, req) => {
+export const handleAppError = (): App => error(async (error, req) => {
   const {markup, status: statusCode} = await renderError({
     stats: req.stats,
     path: req.url,
@@ -26,12 +22,25 @@ const handleAppError = (): AppCreator => error(async (error, req) => {
 });
 
 /**
+ * @returns {String} Markup.
+ */
+const getEmergencyErrorMarkup = (): string => {
+  if (__DEV__) {
+    return '<!DOCTYPE html><html><body>Unhandled error!</body></html>';
+  }
+  return readFileSync(
+    path.join('dist', 'client', 'error', '500', 'index.html'),
+    'utf8',
+  );
+};
+
+/**
  * If everything fails then return an HTTP 500 with a static pre-rendered
  * error page.
- * @returns {AppCreator} Midori app.
+ * @returns {App} Midori app.
  */
-const handleEmergencyError = (): AppCreator => {
-  const markup = readFileSync('error.html', 'utf8');
+export const handleEmergencyError = (): App => {
+  const markup = getEmergencyErrorMarkup();
   return error(() => {
     return compose(
       status(500),
@@ -41,7 +50,7 @@ const handleEmergencyError = (): AppCreator => {
   });
 };
 
-export default (): AppCreator => compose(
+export default (): App => compose(
   handleAppError(),
   handleEmergencyError(),
 );

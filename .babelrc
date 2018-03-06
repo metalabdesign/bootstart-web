@@ -23,6 +23,9 @@
     "@babel/preset-flow"
   ],
   "plugins": [
+    ["babel-plugin-styled-components", {
+      "ssr": true
+    }],
     "./config/babel/devExpressionPlugin",
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-proposal-class-properties",

@@ -1,7 +1,6 @@
 // @flow
 
 export type Asset = {
-  url: string,
   name: string,
   chunkName: string,
 };
@@ -13,6 +12,8 @@ export type WebpackStats = {
   publicPath: string,
 };
 
+export type AssetWithUrl = Asset & {url: string};
+
 export type AssetMap = {
-  [string]: Array<Asset>,
+  [string]: Array<AssetWithUrl>,
 };
