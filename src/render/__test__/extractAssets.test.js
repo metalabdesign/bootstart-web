@@ -1,7 +1,5 @@
 // @flow
 
 describe('/render/extractAssets', () => {
-  it('should work', () => {
-
-  });
+  it('should work', () => {});
 });

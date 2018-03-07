@@ -23,23 +23,28 @@ const removeFill = {
   },
 };
 
-export default () => loader({
-  test: /\.component.svg$/,
-  loaders: [{
-    loader: require.resolve('babel-loader'),
-    query: {
-      plugins: [require.resolve('babel-plugin-transform-react-jsx')],
-    },
-  }, {
-    loader: require.resolve('svg-react-loader'),
-  }, {
-    loader: require.resolve('svgo-loader'),
-    options: {
-      plugins: [
-        {removeStyleElement: true},
-        {removeTitle: true},
-        {removeFill},
-      ],
-    },
-  }],
-});
+export default () =>
+  loader({
+    test: /\.component.svg$/,
+    loaders: [
+      {
+        loader: require.resolve('babel-loader'),
+        query: {
+          plugins: [require.resolve('babel-plugin-transform-react-jsx')],
+        },
+      },
+      {
+        loader: require.resolve('svg-react-loader'),
+      },
+      {
+        loader: require.resolve('svgo-loader'),
+        options: {
+          plugins: [
+            {removeStyleElement: true},
+            {removeTitle: true},
+            {removeFill},
+          ],
+        },
+      },
+    ],
+  });

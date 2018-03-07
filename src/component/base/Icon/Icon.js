@@ -3,8 +3,6 @@
 // Import modules ==============================================================
 import React from 'react';
 
-const Icon = () => (
-  <div/>
-);
+const Icon = () => <div />;
 
 export default Icon;

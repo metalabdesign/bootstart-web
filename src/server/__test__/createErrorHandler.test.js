@@ -30,7 +30,7 @@ jest.mock('fs', () => {
 });
 
 class Boom extends ExtendableError {
-  statusCode = 500
+  statusCode = 500;
   constructor(code) {
     super();
     this.statusCode = code;
@@ -45,20 +45,14 @@ const boom = (code) => {
 
 describe('/server/createRenderErrorMiddleware', () => {
   it('should render error', () => {
-    const app = compose(
-      boom(420),
-      createErrorHandler()
-    );
+    const app = compose(boom(420), createErrorHandler());
     return fetch(app, '/error').then((res) => {
       expect(res.statusCode).toBe(420);
       expect(res.body).toContain('hello');
     });
   });
   it('should handle errors in the error handler', () => {
-    const app = compose(
-      boom(420),
-      createErrorHandler()
-    );
+    const app = compose(boom(420), createErrorHandler());
     return fetch(app, '/emergency').then((res) => {
       expect(res.statusCode).toBe(500);
       expect(res.body).toContain('bananas');

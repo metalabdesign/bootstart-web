@@ -8,18 +8,19 @@ import {renderError} from '/render';
  * Try to handle errors using the app's error root.
  * @returns {App} Midori app.
  */
-export const handleAppError = (): App => error(async (error, req) => {
-  const {markup, status: statusCode} = await renderError({
-    stats: req.stats,
-    path: req.url,
-    error,
+export const handleAppError = (): App =>
+  error(async (error, req) => {
+    const {markup, status: statusCode} = await renderError({
+      stats: req.stats,
+      path: req.url,
+      error,
+    });
+    return compose(
+      status(statusCode),
+      header('Content-Type', 'text/html; charset=utf-8'),
+      send(markup),
+    );
   });
-  return compose(
-    status(statusCode),
-    header('Content-Type', 'text/html; charset=utf-8'),
-    send(markup),
-  );
-});
 
 /**
  * @returns {String} Markup.
@@ -50,7 +51,4 @@ export const handleEmergencyError = (): App => {
   });
 };
 
-export default (): App => compose(
-  handleAppError(),
-  handleEmergencyError(),
-);
+export default (): App => compose(handleAppError(), handleEmergencyError());

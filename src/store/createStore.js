@@ -22,12 +22,7 @@ export type Store<S, A, C> = {
   replaceReducer((S, A) => S): void,
 };
 
-function createStore<
-  C,
-  S,
-  A: {type: string},
-  R:(state: S, action: A) => S
->({
+function createStore<C, S, A: {type: string}, R: (state: S, action: A) => S>({
   context,
   history,
   reducer,
@@ -42,14 +37,15 @@ function createStore<
     applyMiddleware(
       thunkMiddleware.withExtraArgument(context),
       routerMiddleware(history),
-      ...__DEV__ ? [require('redux-freeze')] : [],
+      ...(__DEV__ ? [require('redux-freeze')] : []),
     ),
     identity,
   );
 
-  const store = state !== undefined
-    ? create(reducer, state, enhancer)
-    : create(reducer, enhancer);
+  const store =
+    state !== undefined
+      ? create(reducer, state, enhancer)
+      : create(reducer, enhancer);
 
   return store;
 }

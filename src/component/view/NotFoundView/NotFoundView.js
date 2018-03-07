@@ -5,7 +5,7 @@ import Status from '/component/util/Status';
 
 const NotFoundView = () => (
   <div>
-    <Status code={404}/>
+    <Status code={404} />
     Not found.
   </div>
 );

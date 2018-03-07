@@ -16,9 +16,9 @@ type MapStats = (x: WebpackStats) => App;
  * @param {Object} devServer Thing.
  * @returns {Function} Next.
  */
-export const getDevStats = (
-  devServer: Client = createClient()
-) => (fn: MapStats) => {
+export const getDevStats = (devServer: Client = createClient()) => (
+  fn: MapStats,
+) => {
   return request(() => {
     return devServer.getStats('client').then(fn);
   });
@@ -31,11 +31,9 @@ export const getDevStats = (
  * @returns {App} The result of `fn` applied to the stats object.
  */
 export const getStaticStats = (fn: MapStats) => {
-  const stats = JSON.parse(fs.readFileSync(join(
-    'dist',
-    'client',
-    'stats.json'
-  ), 'utf8'));
+  const stats = JSON.parse(
+    fs.readFileSync(join('dist', 'client', 'stats.json'), 'utf8'),
+  );
   return fn(stats);
 };
 
@@ -53,9 +51,12 @@ type ServeStaticOptions = {
   path: string,
 };
 export const serveStaticAssets = ({publicPath, path}: ServeStaticOptions) => {
-  return use(publicPath, serve({
-    root: path,
-  }));
+  return use(
+    publicPath,
+    serve({
+      root: path,
+    }),
+  );
 };
 
 /**
@@ -75,10 +76,12 @@ const createWebpackMiddleware = ({
 }: Options = {}) => {
   return compose(
     getStats((stats) => assign({stats})),
-    serve ? serveStaticAssets({
-      publicPath: '/asset',
-      path: join('dist', 'client'),
-    }) : next,
+    serve
+      ? serveStaticAssets({
+          publicPath: '/asset',
+          path: join('dist', 'client'),
+        })
+      : next,
   );
 };
 

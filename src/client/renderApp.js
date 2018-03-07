@@ -18,7 +18,7 @@ const ReactDOM: {
     container: Element,
     callback?: () => void,
   ): React$ElementRef<ElementType>,
-// flowlint unclear-type: off
+  // flowlint unclear-type: off
 } = (_ReactDOM: any);
 // flowlint unclear-type: error
 
@@ -36,7 +36,7 @@ const renderApp = <S, A, C>({store, history}: Params<S, A, C>) => {
 
   ReactDOM.hydrate(
     <ConnectedRouter history={history} store={store}>
-      <AppRoot store={store}/>
+      <AppRoot store={store} />
     </ConnectedRouter>,
     root,
   );

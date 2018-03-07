@@ -21,9 +21,7 @@ class ErrorRoot extends React.PureComponent<{error: Error}> {
 
   render() {
     return (
-      <pre style={style}>
-        {this.props.error.stack || this.props.error.name}
-      </pre>
+      <pre style={style}>{this.props.error.stack || this.props.error.name}</pre>
     );
   }
 }

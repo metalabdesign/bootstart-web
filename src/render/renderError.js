@@ -39,24 +39,21 @@ type Options = {
   stats: WebpackStats,
 };
 
-export default async ({
-  error,
-  stats,
-}: Options) => {
+export default async ({error, stats}: Options) => {
   const sheet = new ServerStyleSheet();
-  const markup = ReactDOMServer.renderToString((
+  const markup = ReactDOMServer.renderToString(
     <StyleSheetManager sheet={sheet.instance}>
-      <ErrorRoot error={error}/>
-    </StyleSheetManager>
-  ));
-  const page = ReactDOMServer.renderToStaticMarkup((
+      <ErrorRoot error={error} />
+    </StyleSheetManager>,
+  );
+  const page = ReactDOMServer.renderToStaticMarkup(
     <Page
       rootElementId={ErrorRoot.rootElementId}
       markup={markup}
       head={sheet.getStyleElement()}
       assets={extractAssets(stats)}
-    />
-  ));
+    />,
+  );
   return Promise.resolve({
     markup: `<!DOCTYPE html>${page}`,
     status: getStatus(error),

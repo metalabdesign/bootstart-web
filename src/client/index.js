@@ -36,5 +36,4 @@ if (module.hot) {
     store.replaceReducer(nextReducer);
   });
 }
-
 renderApp({store, history});

@@ -19,7 +19,7 @@ describe('/server/createWebpackMiddleware', () => {
       request((req, res) => {
         res.stats = req.stats;
         return halt;
-      })
+      }),
     );
     return fetch(app).then((res) => {
       expect(res.stats.publicPath).toBe('/foo');

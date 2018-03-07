@@ -18,10 +18,9 @@ const extractAssets = (stats: WebpackStats): AssetMap => {
       ...asset,
       url: `${rootPath}/${asset.name}`,
     })),
-    chain((asset) => map(
-      (chunkName) => ({...asset, chunkName}),
-      asset.chunkNames
-    )),
+    chain((asset) =>
+      map((chunkName) => ({...asset, chunkName}), asset.chunkNames),
+    ),
     groupBy(prop('chunkName')),
   )(base);
 };

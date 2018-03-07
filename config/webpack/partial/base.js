@@ -23,13 +23,13 @@ const base = ({name, target}) => {
         new CleanPlugin([config.output.path], {
           root: config.context,
         }),
-        config
+        config,
       ),
 
     plugin(
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      })
+      }),
     ),
 
     assoc('mode', __DEV__ ? 'development' : 'production'),
@@ -61,13 +61,13 @@ const base = ({name, target}) => {
       path: path.join(context, 'dist', name),
       ...(!__DEV__ && target === 'web'
         ? {
-          filename: '[name].[hash].js',
-          chunkFilename: '[name].[hash].js',
-        }
+            filename: '[name].[hash].js',
+            chunkFilename: '[name].[hash].js',
+          }
         : {
-          filename: '[name].js',
-          chunkFilename: '[name].js',
-        }),
+            filename: '[name].js',
+            chunkFilename: '[name].js',
+          }),
     }),
 
     // Define the build root context as the nearest directory containing a
@@ -85,7 +85,7 @@ const base = ({name, target}) => {
           : []),
         path.join(context, 'src', `${name}`),
       ],
-    })
+    }),
   );
 };
 

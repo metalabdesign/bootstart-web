@@ -17,8 +17,8 @@ const AppRoot = ({store}) => {
   return (
     <Provider store={store}>
       <Switch>
-        <Route path='/' component={LandingView}/>
-        <Route component={NotFoundView}/>
+        <Route path="/" component={LandingView} />
+        <Route component={NotFoundView} />
       </Switch>
     </Provider>
   );
@@ -26,9 +26,7 @@ const AppRoot = ({store}) => {
 
 AppRoot.rootElementId = 'app';
 
-export default compose(
-  hot(module),
-)(AppRoot);
+export default compose(hot(module))(AppRoot);
 
 if (module.hot) {
   if (module.hot.status() === 'apply') {

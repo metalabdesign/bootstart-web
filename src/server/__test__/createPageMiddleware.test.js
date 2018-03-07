@@ -23,20 +23,14 @@ const fakeStats = request((req) => {
 
 describe('/server/createPageMiddleware', () => {
   it('should render the page', () => {
-    const app = compose(
-      fakeStats,
-      createPageMiddleware(),
-    );
+    const app = compose(fakeStats, createPageMiddleware());
     return fetch(app, '/success').then((res) => {
       expect(res.statusCode).toBe(200);
       expect(res.body).toContain('hello');
     });
   });
   it('should handle redirects', () => {
-    const app = compose(
-      fakeStats,
-      createPageMiddleware(),
-    );
+    const app = compose(fakeStats, createPageMiddleware());
     return fetch(app, '/redirect').then((res) => {
       expect(res.statusCode).toBe(302);
     });

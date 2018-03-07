@@ -23,12 +23,10 @@ import Page from '/render/component/Page';
 // Import local utils ==========================================================
 import extractAssets from './extractAssets';
 
-const renderPage = (props) => ReactDOMServer.renderToStaticMarkup((
-  <Page
-    rootElementId={AppRoot.rootElementId}
-    {...props}
-  />
-));
+const renderPage = (props) =>
+  ReactDOMServer.renderToStaticMarkup(
+    <Page rootElementId={AppRoot.rootElementId} {...props} />,
+  );
 
 type Options = {
   path: string,
@@ -54,9 +52,9 @@ const renderApp = async ({path, stats}: Options) => {
   const markup = ReactDOMServer.renderToString(
     <StaticRouter location={path} context={routerContext}>
       <StyleSheetManager sheet={sheet.instance}>
-        <AppRoot store={store}/>
+        <AppRoot store={store} />
       </StyleSheetManager>
-    </StaticRouter>
+    </StaticRouter>,
   );
 
   if (routerContext.url) {

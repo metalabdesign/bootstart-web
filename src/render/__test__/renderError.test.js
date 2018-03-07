@@ -1,7 +1,5 @@
 // @flow
 
 describe('/render/renderError', () => {
-  it('should work', () => {
-
-  });
+  it('should work', () => {});
 });
