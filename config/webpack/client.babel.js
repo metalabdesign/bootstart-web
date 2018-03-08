@@ -1,15 +1,12 @@
 import {compose, identity} from 'ramda';
 import {join} from 'path';
-import {output, plugin} from 'webpack-partial';
+import {plugin} from 'webpack-partial';
 import PagesPlugin from 'pages-webpack-plugin';
 
 import base from './partial/base';
 import promise from './partial/promise';
 
 const createConfig = compose(
-  output({
-    publicPath: '/asset',
-  }),
   __DEV__
     ? identity
     : (config) => {

@@ -58,6 +58,7 @@ const base = ({name, target}) => {
     // Define chunk file name pattern. Use the content hash as the filename in
     // production builds to prevent browser caching between releases.
     output({
+      publicPath: '/asset/',
       path: path.join(context, 'dist', name),
       ...(!__DEV__ && target === 'web'
         ? {
