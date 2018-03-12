@@ -1,5 +1,5 @@
 // @flow
-import {error, compose, status, header, send, App} from 'midori';
+import {error, compose, status, header, send, next, App} from 'midori';
 import {readFileSync} from 'fs';
 import path from 'path';
 import {renderError} from '/render';
@@ -26,9 +26,6 @@ export const handleAppError = (): App =>
  * @returns {String} Markup.
  */
 const getEmergencyErrorMarkup = (): string => {
-  if (__DEV__) {
-    return '<!DOCTYPE html><html><body>Unhandled error!</body></html>';
-  }
   return readFileSync(
     path.join('dist', 'client', 'error', '500', 'index.html'),
     'utf8',
@@ -37,10 +34,14 @@ const getEmergencyErrorMarkup = (): string => {
 
 /**
  * If everything fails then return an HTTP 500 with a static pre-rendered
- * error page.
+ * error page for production. Fallback to the default error handler when in
+ * development mode.
  * @returns {App} Midori app.
  */
 export const handleEmergencyError = (): App => {
+  if (__DEV__) {
+    return next;
+  }
   const markup = getEmergencyErrorMarkup();
   return error(() => {
     return compose(

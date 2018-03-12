@@ -1,6 +1,6 @@
 // @flow
 import ExtendableError from 'es6-error';
-import {compose, request} from 'midori';
+import {compose, request, error, send} from 'midori';
 import {fetch} from 'midori/test';
 import createErrorHandler from '/server/createErrorHandler';
 
@@ -56,6 +56,27 @@ describe('/server/createRenderErrorMiddleware', () => {
     return fetch(app, '/emergency').then((res) => {
       expect(res.statusCode).toBe(500);
       expect(res.body).toContain('bananas');
+    });
+  });
+  describe('development mode', () => {
+    beforeEach(() => {
+      global.__DEV__ = true;
+    });
+    afterEach(() => {
+      global.__DEV__ = false;
+    });
+    it('should bubble up errors', () => {
+      const app = compose(
+        boom(420),
+        createErrorHandler(),
+        error(() => {
+          return send('bananas');
+        }),
+      );
+      return fetch(app, '/emergency').then((res) => {
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toContain('bananas');
+      });
     });
   });
 });
