@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = function(babel) {
   const t = babel.types;
 
@@ -6,9 +7,9 @@ module.exports = function(babel) {
     t.memberExpression(
       t.memberExpression(t.identifier('process'), t.identifier('env'), false),
       t.identifier('NODE_ENV'),
-      false,
+      false
     ),
-    t.stringLiteral('production'),
+    t.stringLiteral('production')
   );
 
   return {
