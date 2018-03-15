@@ -3,6 +3,7 @@
 // Import modules ==============================================================
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import {ServerStyleSheet, StyleSheetManager} from 'styled-components';
 
 // Import types ================================================================
 import type {WebpackStats} from '/render/types';
@@ -38,20 +39,21 @@ type Options = {
   stats: WebpackStats,
 };
 
-export default async ({
-  error,
-  stats,
-}: Options) => {
-  const markup = ReactDOMServer.renderToString((
-    <ErrorRoot error={error}/>
-  ));
-  const page = ReactDOMServer.renderToStaticMarkup((
+export default async ({error, stats}: Options) => {
+  const sheet = new ServerStyleSheet();
+  const markup = ReactDOMServer.renderToString(
+    <StyleSheetManager sheet={sheet.instance}>
+      <ErrorRoot error={error} />
+    </StyleSheetManager>,
+  );
+  const page = ReactDOMServer.renderToStaticMarkup(
     <Page
       rootElementId={ErrorRoot.rootElementId}
       markup={markup}
+      head={sheet.getStyleElement()}
       assets={extractAssets(stats)}
-    />
-  ));
+    />,
+  );
   return Promise.resolve({
     markup: `<!DOCTYPE html>${page}`,
     status: getStatus(error),

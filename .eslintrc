@@ -3,7 +3,15 @@ extends:
   - metalab/react
 env:
   browser: true
+plugins:
+  - prettier
 rules:
+  indent: 0
+  space-before-function-paren: 0
+  jsx-quotes:
+    - 2
+    - prefer-double
+  prettier/prettier: 2
   metalab/jsx-a11y/no-noninteractive-element-interactions: 0
   metalab/jsx-a11y/media-has-caption: 0
   metalab/jsx-a11y/anchor-has-content: 0

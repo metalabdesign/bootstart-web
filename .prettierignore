@@ -1,0 +1,7 @@
+node_modules
+/coverage
+/dist
+/flow-typed
+/flow-stub
+/config/webpack/loader
+/config/webpack/babel

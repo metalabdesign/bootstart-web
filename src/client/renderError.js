@@ -29,7 +29,7 @@ const getErrorRootNode = () => {
 // TODO: Unmount the main app when this is called.
 export const renderError = (error: Error) => {
   if (!appFailed) {
-    ReactDOM.render(<ErrorRoot error={error}/>, getErrorRootNode());
+    ReactDOM.render(<ErrorRoot error={error} />, getErrorRootNode());
     appFailed = true;
   }
 };

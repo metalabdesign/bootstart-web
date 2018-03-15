@@ -5,7 +5,7 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 
 export type Props = {
-  code: number
+  code: number,
 };
 
 export const Status = ({code}: Props) => {

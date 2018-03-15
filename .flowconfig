@@ -1,5 +1,5 @@
 [ignore]
-.*/node_modules/webpack-udev-server/.*
+.*/node_modules/webpack-cli/*
 
 [include]
 

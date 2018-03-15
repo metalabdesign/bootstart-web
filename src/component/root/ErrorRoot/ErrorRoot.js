@@ -3,6 +3,8 @@
 // Import modules ==============================================================
 import React from 'react';
 
+import '/client/globalStyles';
+
 const style = {
   top: 0,
   right: 0,
@@ -19,9 +21,7 @@ class ErrorRoot extends React.PureComponent<{error: Error}> {
 
   render() {
     return (
-      <pre style={style}>
-        {this.props.error.stack || this.props.error.name}
-      </pre>
+      <pre style={style}>{this.props.error.stack || this.props.error.name}</pre>
     );
   }
 }

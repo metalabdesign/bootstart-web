@@ -30,38 +30,39 @@ export default () => {
     importLoaders: 1,
   };
 
-  return (config) => compose(
-    plugin(extractor),
-    loader({
-      test: /\.css\.js$/,
-      loader: [
-        require.resolve('css-js-loader'),
-        require.resolve('value-loader'),
-      ],
-    }),
-    loader({
-      test: IS_STYLE,
-      loader: require.resolve('postcss-loader'),
-      options: {
-        config: {
-          path: join(config.context, 'config', 'postcss'),
-        },
-      },
-    }),
-    config.target === 'web'
-      ? loader({
-        test: IS_STYLE,
-        loader: extractor.extract({
-          use: {
-            loader: require.resolve('css-loader'),
-            options,
-          },
-        }),
-      })
-      : loader({
-        test: IS_STYLE,
-        loader: require.resolve('css-loader/locals'),
-        options,
+  return (config) =>
+    compose(
+      plugin(extractor),
+      loader({
+        test: /\.css\.js$/,
+        loader: [
+          require.resolve('css-js-loader'),
+          require.resolve('value-loader'),
+        ],
       }),
-  )(config);
+      loader({
+        test: IS_STYLE,
+        loader: require.resolve('postcss-loader'),
+        options: {
+          config: {
+            path: join(config.context, 'config', 'postcss'),
+          },
+        },
+      }),
+      config.target === 'web'
+        ? loader({
+            test: IS_STYLE,
+            loader: extractor.extract({
+              use: {
+                loader: require.resolve('css-loader'),
+                options,
+              },
+            }),
+          })
+        : loader({
+            test: IS_STYLE,
+            loader: require.resolve('css-loader/locals'),
+            options,
+          }),
+    )(config);
 };

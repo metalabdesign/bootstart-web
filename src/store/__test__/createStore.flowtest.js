@@ -6,7 +6,7 @@ import createStore from '../';
 // type Action = {type: 'FOO'};
 
 declare class Context {
-  fetch(string): Promise<string>
+  fetch(string): Promise<string>;
 }
 
 type State = {foo: number};
@@ -44,8 +44,9 @@ store.dispatch((dispatch, getState, context) => {
   // The context type should propagate.
   // $ExpectError
   context.whatever;
-  // $ExpectError
-  context.fetch(null)
+  context
+    // $ExpectError
+    .fetch(null)
     // $ExpectError
     .then((res: number) => res);
 
@@ -74,8 +75,8 @@ store.dispatch((dispatch, getState, context) => {
 }): string);
 
 // The return value of the inner thunk should propagate out.
-store.dispatch((dispatch) =>
-  dispatch((dispatch) =>
+store.dispatch(
+  (dispatch) =>
     dispatch((dispatch) =>
       dispatch((dispatch) =>
         dispatch((dispatch) =>
@@ -86,18 +87,17 @@ store.dispatch((dispatch) =>
                   dispatch((dispatch) =>
                     dispatch((dispatch) =>
                       dispatch((dispatch) =>
-                        dispatch(() => undefined)
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  )
+                        dispatch((dispatch) => dispatch(() => undefined)),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
   // $ExpectError
 ).length;
 
@@ -118,8 +118,9 @@ store.dispatch((dispatch) =>
                         // The context type should propagate.
                         // $ExpectError
                         context.whatever;
-                        // $ExpectError
-                        context.fetch(null)
+                        context
+                          // $ExpectError
+                          .fetch(null)
                           // $ExpectError
                           .then((res: number) => res);
 
@@ -137,15 +138,15 @@ store.dispatch((dispatch) =>
                         // $ExpectError
                         dispatch({type: 'BAR'});
                         return [];
-                      })
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  )
+                      }),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
 ).length;
