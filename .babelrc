@@ -5,11 +5,6 @@
       "plugins": [
         "react-hot-loader/babel"
       ]
-    },
-    "test": {
-      "plugins": [
-        "./config/babel/istanbulHackPlugin"
-      ]
     }
   },
   "presets": [
